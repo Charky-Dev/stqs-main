@@ -1,10 +1,10 @@
 import { it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import NewGame from "./NewGame";
+import Authorization from "./Authorization";
 
 it("renders", async () => {
     // Arrange
-    render(<NewGame />)
+    render(<Authorization />)
 
     // Act
     await screen.findByRole("heading");
