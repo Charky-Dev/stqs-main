@@ -1,4 +1,5 @@
 import { useState, Dispatch, SetStateAction } from "react"
+import {fetchNewAgent} from "../ApiCalls"
 
 interface PropTypes {
     setAuthType: Dispatch<SetStateAction<string>>;
@@ -40,32 +41,11 @@ export default function NewGame({ setAuthType, accountToken, agentToken, setAgen
                         <input name="accountToken" value={newUserForm.accountToken} onChange={(e) => setNewUserForm({ ...newUserForm, accountToken: e.currentTarget.value })} />
                     </>
             }
-            <input type="submit" onClick={async () => {
-                // save this to session storage to persist after an accidental refresh
-                localStorage.setItem('accountToken', JSON.stringify(newUserForm.accountToken));
-
-                // send request to create a new agent
-                const resp = await fetch("https://api.spacetraders.io/v2/register", {
-                    method: "POST",
-                    headers: {
-                        "Authorization": "Bearer " + newUserForm.accountToken,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        symbol: newUserForm.symbol,
-                        faction: newUserForm.faction,
-                    }),
-                });
-
-                const json = await resp.json();
-
-                if (resp.ok) {
-                    // set the agent token for later use
-                    setAgentToken(json.data.token)
-                    setResp(JSON.stringify(json, null, 2))
-                }
-
+            <input type="submit" onClick={() => {
+                // send api request and fetch new user details
+                fetchNewAgent({newUserForm, setAgentToken, setResp});
             }} />
+
             <pre>Account token: {accountToken}</pre>
             <pre>Agent token: {agentToken}</pre>
             <pre>Response: {resp}</pre>

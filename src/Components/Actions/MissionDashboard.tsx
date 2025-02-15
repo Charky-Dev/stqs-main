@@ -1,25 +1,13 @@
 import { useState, useEffect } from "react";
+import {fetchContractDetails} from "../ApiCalls"
 
 export default function MissionDashboard(agentToken: { agentToken: string; }) {
     const [contractDetails, setContractDetails] = useState("");
 
+    //api request to fetch details of current missions 
     useEffect(() => {
-        const fetchData = async () => {
-            const resp = await fetch("https://api.spacetraders.io/v2/my/contracts", {
-                method: "GET",
-                headers: {
-                    "Authorization": "Bearer " + agentToken.agentToken,
-                    "Content-Type": "application/json",
-                },
-            });
-            const json = await resp.json();
-
-            setContractDetails(JSON.stringify(json, null, 2));
-
-        };
-
-        fetchData();
-    }, [agentToken]);
+        fetchContractDetails(agentToken.agentToken, setContractDetails);
+    }, [agentToken, setContractDetails]);
 
 return(
 <>

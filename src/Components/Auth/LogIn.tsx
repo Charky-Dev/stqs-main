@@ -1,4 +1,5 @@
 import { useState, Dispatch, SetStateAction } from "react"
+import {fetchAgentDetails} from "../ApiCalls"
 
 interface PropTypes {
   setAuthType: Dispatch<SetStateAction<string>>;
@@ -20,25 +21,8 @@ export default function LogIn({ agentToken, setAuthType, setAgentToken }: PropTy
       <label htmlFor="agentToken">Please enter your Agent token:</label>
       <input name="agentToken" value={returningUserForm.agentToken} onChange={(e) => setReturningUserForm({ ...returningUserForm, agentToken: e.currentTarget.value })} />
 
-      <input type="submit" onClick={async () => {
-
-        sessionStorage.setItem('agentToken', JSON.stringify(returningUserForm.agentToken));
-
-        const resp = await fetch("https://api.spacetraders.io/v2/my/agent", {
-          method: "GET",
-          headers: {
-            "Authorization": "Bearer " + returningUserForm.agentToken,
-            "Content-Type": "application/json",
-          },
-        });
-
-        const json = await resp.json();
-
-        if (resp.ok) {
-          setResp(JSON.stringify(json, null, 2));
-          setAgentToken(returningUserForm.agentToken);
-        }
-
+      <input type="submit" onClick={() => {
+        fetchAgentDetails({returningUserForm, setAgentToken, setResp});
       }} />
       <pre>Agent token: {agentToken}</pre>
       <pre>Response: {resp}</pre>
