@@ -28,13 +28,13 @@ function Authorization() {
   else if (authType == "Returning") {
     // if the user wishes to log in using an agent token
     return (
-      <LogIn setAuthType={setAuthType} agentToken={agentToken} setAgentToken={setAgentToken} />
+        <LogIn setAuthType={setAuthType} agentToken={agentToken} setAgentToken={setAgentToken} />
     )
   }
   else {
     // Show new user creation form
     return (
-      <NewGame accountToken={accountToken} setAuthType={setAuthType} agentToken={agentToken} setAgentToken={setAgentToken} />
+        <NewGame accountToken={accountToken} setAuthType={setAuthType} agentToken={agentToken} setAgentToken={setAgentToken} />
     )
   }
 }

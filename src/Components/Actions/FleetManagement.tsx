@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {fetchFleet, fetchShip, fetchWaypoint} from "../ApiCalls"
+import { fetchFleet, fetchShip, fetchWaypoint } from "../ApiCalls"
 
 export default function FleetManagement(agentToken: { agentToken: string; }) {
     const [shipNames, setShipNames] = useState([""]); //list of the player's ships for quick reference
@@ -13,11 +13,14 @@ export default function FleetManagement(agentToken: { agentToken: string; }) {
     return (
         <>
             <h2>Fleet Managment</h2>
-            <h3>Current Ships:</h3>
-            {/* map all ships to buttons so player can choose to view more information */}
-            {shipNames.map((ship) => <input key={ship} type="button" className={currentShip == String({ ship }) ? "ActiveMenuButton" : "MenuButton"} value={ship} onClick={() => setCurrentShip(ship)} />)}
-            {/* fetch information about the currently selected ship */}
-            {currentShip == String("None") ? null : <ShipDetails shipSymbol={currentShip} agentToken={agentToken.agentToken} />}
+            <div id="fleetList">
+                {/* map all ships to buttons so player can choose to view more information */}
+                {shipNames.map((ship) => <input key={ship} type="button" className={currentShip == String({ ship }) ? "ActiveMenuButton" : "MenuButton"} value={ship} onClick={() => setCurrentShip(ship)} />)}
+            </div>
+            <div id="shipOverview">
+                {/* fetch information about the currently selected ship */}
+                {currentShip == String("None") ? null : <ShipDetails shipSymbol={currentShip} agentToken={agentToken.agentToken} />}
+            </div>
         </>
     )
 
@@ -27,7 +30,7 @@ export default function FleetManagement(agentToken: { agentToken: string; }) {
 function ShipDetails({ shipSymbol, agentToken }: { shipSymbol: string; agentToken: string }) {
     const [shipRegistration, setShipRegistration] = useState({ name: "", factionSymbol: "", role: "" });
     const [shipCooldown, setShipCooldown] = useState({ totalSeconds: 0, remainingSeconds: 0 });
-    const [shipNav, setShipNav] = useState({systemSymbol:"", waypointSymbol:"", route:"", status:"", flightMode:""});
+    const [shipNav, setShipNav] = useState({ systemSymbol: "", waypointSymbol: "", route: "", status: "", flightMode: "" });
 
     // currently not fully implemented
     // const [shipCrew, setShipCrew] = useState();
@@ -40,61 +43,64 @@ function ShipDetails({ shipSymbol, agentToken }: { shipSymbol: string; agentToke
     // const [shipFuel, setShipFuel] = useState();
 
     useEffect(() => {
-        fetchShip({agentToken, shipSymbol, setShipRegistration, setShipCooldown, setShipNav});
+        fetchShip({ agentToken, shipSymbol, setShipRegistration, setShipCooldown, setShipNav });
     }, [agentToken, shipSymbol, setShipRegistration, setShipCooldown, setShipNav]);
 
     return (
         <>
-            <h3>Ship Details:</h3>
-            {shipRegistration && shipCooldown && 
-            <section>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Faction</th>
-                            <th>Role</th>
-                            <th>Cooldown Time</th>
-                            <th>Cooldown Remaining</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{shipRegistration.name}</td>
-                            <td>{shipRegistration.factionSymbol}</td>
-                            <td>{shipRegistration.role}</td>
-                            <td>{shipCooldown.totalSeconds}</td>
-                            <td>{shipCooldown.remainingSeconds}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>}
-            <WaypointDetails agentToken={agentToken} systemSymbol={shipNav.systemSymbol} waypointSymbol={shipNav.waypointSymbol}/>
- 
+            <div id="shipDetails">
+                <h3>Ship Details:</h3>
+                {shipRegistration && shipCooldown &&
+                    <section>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Faction</th>
+                                    <th>Role</th>
+                                    <th>Cooldown Time</th>
+                                    <th>Cooldown Remaining</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{shipRegistration.name}</td>
+                                    <td>{shipRegistration.factionSymbol}</td>
+                                    <td>{shipRegistration.role}</td>
+                                    <td>{shipCooldown.totalSeconds}</td>
+                                    <td>{shipCooldown.remainingSeconds}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>}
+            </div>
+            <WaypointDetails agentToken={agentToken} systemSymbol={shipNav.systemSymbol} waypointSymbol={shipNav.waypointSymbol} />
+
         </>
     )
 }
 
 // interface for data types in fetchAgentDetails
-interface waypointPropTypes { 
-    agentToken: string; 
-    systemSymbol:string; 
-    waypointSymbol:string
+interface waypointPropTypes {
+    agentToken: string;
+    systemSymbol: string;
+    waypointSymbol: string
 }
 //fetch details about a given waypoint
-function WaypointDetails({agentToken, systemSymbol, waypointSymbol}: waypointPropTypes) {
+function WaypointDetails({ agentToken, systemSymbol, waypointSymbol }: waypointPropTypes) {
     const [waypointDetails, setWaypointDetails] = useState("");
 
     useEffect(() => {
-        fetchWaypoint({agentToken, systemSymbol, waypointSymbol, setWaypointDetails});
+        fetchWaypoint({ agentToken, systemSymbol, waypointSymbol, setWaypointDetails });
     }, [agentToken, systemSymbol, waypointSymbol, setWaypointDetails]);
 
 
-    return (<>
-    <h3>Waypoint Data:</h3>
-    <pre>{waypointDetails}</pre>
-    
-    </>)
+    return (
+        <div id="waypointData">
+            <h3>Waypoint Data:</h3>
+            <pre>{waypointDetails}</pre>
+
+        </div>)
 }
 
 function FetchNewContract() {
