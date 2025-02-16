@@ -10,7 +10,8 @@ import moneyIcon from "../assets/images/money.png"
 import "../assets/css/game.css"
 
 export default function ReturningPlayer(apiToken: { agentToken: string; }) {
-    const agentToken = apiToken.agentToken;
+    const agentToken:string = apiToken.agentToken;
+    
     const [userData, setUserData] = useState({ symbol: "", faction: "", agentToken: agentToken });
     const [userHeadquarters, setUserHeadquarters] = useState("");
     const [userCredits, setUserCredits] = useState(0);

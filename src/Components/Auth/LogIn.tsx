@@ -22,14 +22,24 @@ export default function LogIn({ agentToken, setAuthType, setAgentToken }: PropTy
         </div>
         <div>
           <input className="fullWidthButton" type="button" value="Start New Game" onClick={() => setAuthType("New")}></input>
-          <br/>
+          <br />
           {/* input the player's Account key */}
           <label htmlFor="agentToken">Please enter your Agent token:</label>
           <span className="helpText" title="This can be geneerated in your account settings on httm://my.spacetraders.io/agents"> ? </span>
           <textarea className="keyInput" id="fullWidthButton" name="agentToken" value={returningUserForm.agentToken} onChange={(e) => setReturningUserForm({ ...returningUserForm, agentToken: e.currentTarget.value })} />
 
           <input className="fullWidthButton" type="submit" onClick={() => {
-            fetchAgentDetails({ returningUserForm, setAgentToken, setResp });
+            const tokenRegex = /[A-Za-z0-9.\-_]{500,550}/;
+
+            if (!returningUserForm.agentToken.match(tokenRegex)) {
+              const errorBody = "{ \"error\": { \"message\": \"token should only contain letters and numbers\"}}";
+              const errorSettings = { status: 400, statusText:"token should only contain letters and numbers"};
+              const errorResponse = new Response(errorBody, errorSettings); 
+              setResp(JSON.stringify(errorResponse.statusText, null, 2));
+            }
+            else {
+              fetchAgentDetails({ returningUserForm, setAgentToken, setResp });
+            }
           }} />
         </div>
         <div id="accountDetails">

@@ -1,0 +1,524 @@
+
+> stqs@0.0.0 test
+> vitest
+
+
+ DEV  v0.31.1 /Users/charlotteanderson/Documents/stqs-main
+
+ ❯ src/Components/Actions/ButtonMenu.test.tsx  (1 test | 1 failed) 6ms
+   ❯ src/Components/Actions/ButtonMenu.test.tsx > renders
+     → Cannot read properties of null (reading 'useState')
+ ❯ src/Components/Actions/MissionDashboard.test.tsx  (1 test | 1 failed) 1047ms
+   ❯ src/Components/Actions/MissionDashboard.test.tsx > renders
+     → Found multiple elements with the role "heading"
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<h2>[39m
+  [0mMission Dashboard[0m
+[36m</h2>[39m
+
+Ignored nodes: comments, script, style
+[36m<h3>[39m
+  [0mCurrent Contract:[0m
+[36m</h3>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<h2>[39m
+      [0mMission Dashboard[0m
+    [36m</h2>[39m
+    [36m<h3>[39m
+      [0mCurrent Contract:[0m
+    [36m</h3>[39m
+    [36m<span />[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<h2>[39m
+      [0mMission Dashboard[0m
+    [36m</h2>[39m
+    [36m<h3>[39m
+      [0mCurrent Contract:[0m
+    [36m</h3>[39m
+    [36m<span />[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ src/Components/ReturningPlayer.test.tsx  (1 test | 1 failed) 1031ms
+   ❯ src/Components/ReturningPlayer.test.tsx > renders
+     → Found multiple elements with the role "heading"
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<h1>[39m
+  [36m<img[39m
+    [33mid[39m=[32m"spaceLogo"[39m
+    [33msrc[39m=[32m"/src/assets/images/spacetraders.ico"[39m
+  [36m/>[39m
+  [0m Space Traders[0m
+[36m</h1>[39m
+
+Ignored nodes: comments, script, style
+[36m<h2>[39m
+  [0mMission Dashboard[0m
+[36m</h2>[39m
+
+Ignored nodes: comments, script, style
+[36m<h3>[39m
+  [0mCurrent Contract:[0m
+[36m</h3>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mid[39m=[32m"gameContainer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mid[39m=[32m"gameHeader"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mid[39m=[32m"titleText"[39m
+        [36m>[39m
+          [36m<h1>[39m
+            [36m<img[39m
+              [33mid[39m=[32m"spaceLogo"[39m
+              [33msrc[39m=[32m"/src/assets/images/spacetraders.ico"[39m
+            [36m/>[39m
+            [0m Space Traders[0m
+          [36m</h1>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mid[39m=[32m"playerDetails"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mid[39m=[32m"welcomeText"[39m
+          [36m>[39m
+            [0mWelcome Back, [0m
+          [36m</span>[39m
+          [36m<br />[39m
+          [36m<img[39m
+            [33mclass[39m=[32m"playerIcon"[39m
+            [33msrc[39m=[32m"/src/assets/images/home.png"[39m
+            [33mtitle[39m=[32m"The waypoint where you are Headquartered"[39m
+          [36m/>[39m
+          [36m<span>[39m
+            [0m [0m
+            [0m [0m
+          [36m</span>[39m
+          [0m   [0m
+          [36m<img[39m
+            [33mclass[39m=[32m"playerIcon"[39m
+            [33msrc[39m=[32m"/src/assets/images/ship.png"[39m
+            [33mtitle[39m=[32m"How many ships you currently have"[39m
+          [36m/>[39m
+          [36m<span>[39m
+            [0m [0m
+            [0m0[0m
+            [0m [0m
+          [36m</span>[39m
+          [0m   [0m
+          [36m<img[39m
+            [33mclass[39m=[32m"playerIcon"[39m
+            [33msrc[39m=[32m"/src/assets/images/money.png"[39m
+            [33mtitle[39m=[32m"How much money you currently have"[39m
+          [36m/>[39m
+          [36m<span>[39m
+            [0m [0m
+            [0m0[0m
+            [0m [0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mid[39m=[32m"buttonMenu"[39m
+        [36m>[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"activeMenuButton"[39m
+            [33mtype[39m=[32m"button"[39m
+            [33mvalue[39m=[32m"Mission Dashboard"[39m
+          [36m/>[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"menuButton"[39m
+            [33mtype[39m=[32m"button"[39m
+            [33mvalue[39m=[32m"Fleet Management"[39m
+          [36m/>[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"menuButton"[39m
+            [33mtype[39m=[32m"button"[39m
+            [33mvalue[39m=[32m"Nothing 1"[39m
+          [36m/>[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"menuButton"[39m
+            [33mtype[39m=[32m"button"[39m
+            [33mvalue[39m=[32m"Nothing 2"[39m
+          [36m/>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mid[39m=[32m"gameViews"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0mMission Dashboard[0m
+          [36m</h2>[39m
+          [36m<h3>[39m
+            [0mCurrent Contract:[0m
+          [36m</h3>[39m
+          [36m<span />[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mid[39m=[32m"gameContainer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mid[39m=[32m"gameHeader"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mid[39m=[32m"titleText"[39m
+        [36m>[39m
+          [36m<h1>[39m
+            [36m<img[39m
+              [33mid[39m=[32m"spaceLogo"[39m
+              [33msrc[39m=[32m"/src/assets/images/spacetraders.ico"[39m
+            [36m/>[39m
+            [0m Space Traders[0m
+          [36m</h1>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mid[39m=[32m"playerDetails"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mid[39m=[32m"welcomeText"[39m
+          [36m>[39m
+            [0mWelcome Back, [0m
+          [36m</span>[39m
+          [36m<br />[39m
+          [36m<img[39m
+            [33mclass[39m=[32m"playerIcon"[39m
+            [33msrc[39m=[32m"/src/assets/images/home.png"[39m
+            [33mtitle[39m=[32m"The waypoint where you are Headquartered"[39m
+          [36m/>[39m
+          [36m<span>[39m
+            [0m [0m
+            [0m [0m
+          [36m</span>[39m
+          [0m   [0m
+          [36m<img[39m
+            [33mclass[39m=[32m"playerIcon"[39m
+            [33msrc[39m=[32m"/src/assets/images/ship.png"[39m
+            [33mtitle[39m=[32m"How many ships you currently have"[39m
+          [36m/>[39m
+          [36m<span>[39m
+            [0m [0m
+            [0m0[0m
+            [0m [0m
+          [36m</span>[39m
+          [0m   [0m
+          [36m<img[39m
+            [33mclass[39m=[32m"playerIcon"[39m
+            [33msrc[39m=[32m"/src/assets/images/money.png"[39m
+            [33mtitle[39m=[32m"How much money you currently have"[39m
+          [36m/>[39m
+          [36m<span>[39m
+            [0m [0m
+            [0m0[0m
+            [0m [0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mid[39m=[32m"buttonMenu"[39m
+        [36m>[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"activeMenuButton"[39m
+            [33mtype[39m=[32m"button"[39m
+            [33mvalue[39m=[32m"Mission Dashboard"[39m
+          [36m/>[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"menuButton"[39m
+            [33mtype[39m=[32m"button"[39m
+            [33mvalue[39m=[32m"Fleet Management"[39m
+          [36m/>[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"menuButton"[39m
+            [33mtype[39m=[32m"button"[39m
+            [33mvalue[39m=[32m"Nothing 1"[39m
+          [36m/>[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"menuButton"[39m
+            [33mtype[39m=[32m"button"[39m
+            [33mvalue[39m=[32m"Nothing 2"[39m
+          [36m/>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mid[39m=[32m"gameViews"[39m
+        [36m>[39m
+          [36m<h2>[39m
+            [0mMission Dashboard[0m
+          [36m</h2>[39m
+          [36m<h3>[39m
+            [0mCurrent Contract:[0m
+          [36m</h3>[39m
+          [36m<span />[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ src/Components/Auth/Authorization.test.tsx  (1 test | 1 failed) 1021ms
+   ❯ src/Components/Auth/Authorization.test.tsx > renders
+     → Found multiple elements with the role "heading"
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<h1>[39m
+  [0mSpaceTraders[0m
+[36m</h1>[39m
+
+Ignored nodes: comments, script, style
+[36m<h2>[39m
+  [0mNew Game[0m
+[36m</h2>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mid[39m=[32m"loginBox"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mid[39m=[32m"loginForm"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mid[39m=[32m"newGameHeader"[39m
+        [36m>[39m
+          [36m<h1>[39m
+            [0mSpaceTraders[0m
+          [36m</h1>[39m
+          [36m<h2>[39m
+            [0mNew Game[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<div>[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"fullWidthButton"[39m
+            [33mtype[39m=[32m"button"[39m
+            [33mvalue[39m=[32m"Log in instead"[39m
+          [36m/>[39m
+          [36m<br />[39m
+          [36m<label[39m
+            [33mfor[39m=[32m"symbol"[39m
+          [36m>[39m
+            [0mCall Sign:[0m
+          [36m</label>[39m
+          [0m [0m
+          [36m<input[39m
+            [33mmaxlength[39m=[32m"12"[39m
+            [33mminlength[39m=[32m"3"[39m
+            [33mname[39m=[32m"symbol"[39m
+            [33mpattern[39m=[32m"[A-Za-z0-9_\\-]{3,12}"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"helpText"[39m
+            [33mtitle[39m=[32m"This is your character's unique identifier"[39m
+          [36m>[39m
+            [0m ? [0m
+          [36m</span>[39m
+          [36m<br />[39m
+          [36m<label[39m
+            [33mfor[39m=[32m"faction"[39m
+          [36m>[39m
+            [0mFaction:[0m
+          [36m</label>[39m
+          [0m [0m
+          [36m<input[39m
+            [33mmaxlength[39m=[32m"30"[39m
+            [33mname[39m=[32m"faction"[39m
+            [33mpattern[39m=[32m"[A-Za-z ]{0,30}"[39m
+            [33mtype[39m=[32m"text"[39m
+            [33mvalue[39m=[32m"COSMIC"[39m
+          [36m/>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"helpText"[39m
+            [33mtitle[39m=[32m"If you aren't sure, this can be left as COSMIC"[39m
+          [36m>[39m
+            [0m ? [0m
+          [36m</span>[39m
+          [36m<br />[39m
+          [36m<label[39m
+            [33mfor[39m=[32m"accountToken"[39m
+          [36m>[39m
+            [0mPlease enter your API Account token:[0m
+          [36m</label>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"helpText"[39m
+            [33mtitle[39m=[32m"This can be found in your account settings on httm://my.spacetraders.io/settings"[39m
+          [36m>[39m
+            [0m ? [0m
+          [36m</span>[39m
+          [36m<br />[39m
+          [36m<textarea[39m
+            [33mclass[39m=[32m"keyInput"[39m
+            [33mmaxlength[39m=[32m"550"[39m
+            [33mminlength[39m=[32m"500"[39m
+            [33mname[39m=[32m"accountToken"[39m
+          [36m/>[39m
+          [36m<br />[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"fullWidthButton"[39m
+            [33mtype[39m=[32m"submit"[39m
+          [36m/>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mid[39m=[32m"accountDetails"[39m
+        [36m>[39m
+          [36m<pre>[39m
+            [0mResponse: [0m
+          [36m</pre>[39m
+          [36m<pre>[39m
+            [0mToken: [0m
+          [36m</pre>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mid[39m=[32m"loginBox"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mid[39m=[32m"loginForm"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mid[39m=[32m"newGameHeader"[39m
+        [36m>[39m
+          [36m<h1>[39m
+            [0mSpaceTraders[0m
+          [36m</h1>[39m
+          [36m<h2>[39m
+            [0mNew Game[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<div>[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"fullWidthButton"[39m
+            [33mtype[39m=[32m"button"[39m
+            [33mvalue[39m=[32m"Log in instead"[39m
+          [36m/>[39m
+          [36m<br />[39m
+          [36m<label[39m
+            [33mfor[39m=[32m"symbol"[39m
+          [36m>[39m
+            [0mCall Sign:[0m
+          [36m</label>[39m
+          [0m [0m
+          [36m<input[39m
+            [33mmaxlength[39m=[32m"12"[39m
+            [33mminlength[39m=[32m"3"[39m
+            [33mname[39m=[32m"symbol"[39m
+            [33mpattern[39m=[32m"[A-Za-z0-9_\\-]{3,12}"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"helpText"[39m
+            [33mtitle[39m=[32m"This is your character's unique identifier"[39m
+          [36m>[39m
+            [0m ? [0m
+          [36m</span>[39m
+          [36m<br />[39m
+          [36m<label[39m
+            [33mfor[39m=[32m"faction"[39m
+          [36m>[39m
+            [0mFaction:[0m
+          [36m</label>[39m
+          [0m [0m
+          [36m<input[39m
+            [33mmaxlength[39m=[32m"30"[39m
+            [33mname[39m=[32m"faction"[39m
+            [33mpattern[39m=[32m"[A-Za-z ]{0,30}"[39m
+            [33mtype[39m=[32m"text"[39m
+            [33mvalue[39m=[32m"COSMIC"[39m
+          [36m/>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"helpText"[39m
+            [33mtitle[39m=[32m"If you aren't sure, this can be left as COSMIC"[39m
+          [36m>[39m
+            [0m ? [0m
+          [36m</span>[39m
+          [36m<br />[39m
+          [36m<label[39m
+            [33mfor[39m=[32m"accountToken"[39m
+          [36m>[39m
+            [0mPlease enter your API Account token:[0m
+          [36m</label>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"helpText"[39m
+            [33mtitle[39m=[32m"This can be found in your account settings on httm://my.spacetraders.io/settings"[39m
+          [36m>[39m
+            [0m ? [0m
+          [36m</span>[39m
+          [36m<br />[39m
+          [36m<textarea[39m
+            [33mclass[39m=[32m"keyInput"[39m
+            [33mmaxlength[39m=[32m"550"[39m
+            [33mminlength[39m=[32m"500"[39m
+            [33mname[39m=[32m"accountToken"[39m
+          [36m/>[39m
+          [36m<br />[39m
+          [36m<input[39m
+            [33mclass[39m=[32m"fullWidthButton"[39m
+            [33mtype[39m=[32m"submit"[39m
+          [36m/>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mid[39m=[32m"accountDetails"[39m
+        [36m>[39m
+          [36m<pre>[39m
+            [0mResponse: [0m
+          [36m</pre>[39m
+          [36m<pre>[39m
+            [0mToken: [0m
+          [36m</pre>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ src/Components/Auth/LogIn.test.tsx  (1 test | 1 failed) 3ms
+   ❯ src/Components/Auth/LogIn.test.tsx > renders
+     → Cannot read properties of null (reading 'useState')
+ ❯ src/Components/Auth/NewGame.test.tsx  (1 test | 1 failed) 3ms
+   ❯ src/Components/Auth/NewGame.test.tsx > renders
+     → Cannot read properties of null (reading 'useState')
+ ✓ src/Components/Actions/FleetManagement.test.tsx  (1 test) 33ms
+
+ Test Files  6 failed | 1 passed (7)
+      Tests  6 failed | 1 passed (7)
+   Start at  11:24:53
+   Duration  1.94s (transform 35ms, setup 507ms, collect 524ms, tests 3.14s, environment 1.26s, prepare 183ms)
+
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit

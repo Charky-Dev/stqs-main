@@ -10,12 +10,12 @@ function Authorization() {
 
   // Fetch any Account or Agent keys from storage
   useEffect(() => {
-    const apiKey = localStorage.getItem('accountToken');
+    const apiKey:string | null = localStorage.getItem('accountToken');
     if (apiKey) {
       setAccountToken(JSON.parse(apiKey));
     }
 
-    const userKey = sessionStorage.getItem('agentToken');
+    const userKey:string | null  = sessionStorage.getItem('agentToken');
     if (userKey) {
       setAgentToken(JSON.parse(userKey));
     }
