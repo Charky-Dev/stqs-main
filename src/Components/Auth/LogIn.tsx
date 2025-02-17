@@ -1,5 +1,5 @@
 import { useState, Dispatch, SetStateAction } from "react"
-import { fetchAgentDetails } from "../ApiCalls"
+import { fetchAgentDetails } from "../Api/ApiHandlingPlayer"
 import "../../assets/css/login.css"
 
 interface PropTypes {
@@ -25,7 +25,7 @@ export default function LogIn({ agentToken, setAuthType, setAgentToken }: PropTy
           <br />
           {/* input the player's Account key */}
           <label htmlFor="agentToken">Please enter your Agent token:</label>
-          <span className="helpText" title="This can be geneerated in your account settings on httm://my.spacetraders.io/agents"> ? </span>
+          <span className="helpText" title="This can be generated in your account settings on httm://my.spacetraders.io/agents"> ? </span>
           <textarea className="keyInput" id="fullWidthButton" name="agentToken" value={returningUserForm.agentToken} onChange={(e) => setReturningUserForm({ ...returningUserForm, agentToken: e.currentTarget.value })} />
 
           <input className="fullWidthButton" type="submit" onClick={() => {

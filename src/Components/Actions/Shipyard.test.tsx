@@ -1,10 +1,10 @@
 import { it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import MissionDashboard from "./MissionDashboard";
+import Shipyard from "./Shipyard";
 
 it("renders", async () => {
     // Arrange
-    render(<MissionDashboard />);
+    render(<Shipyard />);
 
     // Act
     await screen.findAllByRole("heading");
