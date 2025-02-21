@@ -32,8 +32,8 @@ export default function LogIn({ agentToken, setAuthType, setAgentToken }: PropTy
             const tokenRegex = /[A-Za-z0-9.\-_]{500,550}/;
 
             if (!returningUserForm.agentToken.match(tokenRegex)) {
-              const errorBody = "{ \"error\": { \"message\": \"token should only contain letters and numbers\"}}";
-              const errorSettings = { status: 400, statusText:"token should only contain letters and numbers"};
+              const errorBody = "{ \"error\": { \"message\": \"token should only contain letters, numbers, hyphens, underscores and full stops\"}}";
+              const errorSettings = { status: 400, statusText:"token should only contain letters, numbers, hyphens, underscores and full stops"};
               const errorResponse = new Response(errorBody, errorSettings); 
               setResp(JSON.stringify(errorResponse.statusText, null, 2));
             }

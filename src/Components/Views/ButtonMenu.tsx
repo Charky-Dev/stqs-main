@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { PageViewContext } from "../globalContext";
+import { PageViewContext } from "../GlobalContext";
 
 // Menu bar comprised of several buttons to show different functions
 export default function ButtonMenu() {

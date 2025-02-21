@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import ButtonMenu from "./Actions/ButtonMenu";
-import MissionDashboard from "./Actions/MissionDashboard";
-import FleetManagement from "./Actions/FleetManagement";
-import Shipyard from "./Actions/Shipyard";
+import ButtonMenu from "./Views/ButtonMenu";
+import MissionDashboard from "./Views/Mission Dashboard/MissionDashboard";
+import FleetManagement from "./Views/Fleet Management/FleetManagement";
+import Shipyard from "./Views/Shipyard/Shipyard";
 import { fetchReturningPlayer } from "./Api/ApiHandlingPlayer";
-import { AgentTokenContext, PageViewContext } from "./globalContext";
+import { AgentTokenContext, PageViewContext } from "./GlobalContext";
 import logo from "../assets/images/spacetraders.ico"
 import homeIcon from "../assets/images/home.png"
 import shipIcon from "../assets/images/ship.png"

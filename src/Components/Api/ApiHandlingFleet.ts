@@ -1,5 +1,6 @@
 import { type Dispatch, type SetStateAction } from "react"
 import { makeApiGetCall } from "./ApiCalls";
+import { FleetShip } from "../Views/Classes";
 
 
 //fetch names of ships for a user agent
@@ -46,18 +47,34 @@ export async function fetchFleetLocations(agentToken: string, setShipNames: Disp
 interface fetchShipPropTypes {
     agentToken: string;
     shipSymbol: string;
-    setShipRegistration: Dispatch<SetStateAction<{ name: string, factionSymbol: string, role: string }>>;
-    setShipCooldown: Dispatch<SetStateAction<{ totalSeconds: number, remainingSeconds: number }>>;
-    setShipNav: Dispatch<SetStateAction<{ systemSymbol: string, waypointSymbol: string, route: string, status: string, flightMode: string }>>;
+    setFleetShipDetails: Dispatch<SetStateAction<FleetShip>>;
 }
 //function to fetch information on a user's ship based on designation
-export async function fetchShip({ agentToken, shipSymbol, setShipRegistration, setShipCooldown, setShipNav }: fetchShipPropTypes) {
+export async function fetchShip({ agentToken, shipSymbol, setFleetShipDetails }: fetchShipPropTypes) {
     const [json, status] = await makeApiGetCall(`my/ships/${shipSymbol}`, agentToken);
 
+    const fleetShipDetails: FleetShip = {
+        symbol: json.data.symbol,
+        registration: {
+            name: json.data.registration.name,
+            factionSymbol: json.data.registration.factionSymbol,
+            role: json.data.registration.role
+        },
+        cooldown: {
+            totalSeconds: json.data.cooldown.totalSeconds,
+            remainingSeconds: json.data.cooldown.remainingSeconds
+        },
+        nav: {
+            systemSymbol: json.data.nav.systemSymbol,
+            waypointSymbol: json.data.nav.waypointSymbol,
+            route: JSON.stringify(json.data.nav.route, null, 2),
+            status: json.data.nav.status,
+            flightMode: json.data.nav.flightMode
+        },
+    }
+
     if (status) {
-        setShipRegistration({ name: json.data.registration.name, factionSymbol: json.data.registration.factionSymbol, role: json.data.registration.role });
-        setShipCooldown({ totalSeconds: json.data.cooldown.totalSeconds, remainingSeconds: json.data.cooldown.remainingSeconds });
-        setShipNav({ systemSymbol: json.data.nav.systemSymbol, waypointSymbol: json.data.nav.waypointSymbol, route: JSON.stringify(json.data.nav.route, null, 2), status: json.data.nav.status, flightMode: json.data.nav.flightMode })
+        setFleetShipDetails(fleetShipDetails)
     }
     else {
         console.error(json.error);
