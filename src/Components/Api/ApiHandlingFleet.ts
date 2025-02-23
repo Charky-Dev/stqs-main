@@ -1,42 +1,14 @@
 import { type Dispatch, type SetStateAction } from "react"
-import { makeApiGetCall } from "./ApiCalls";
+import { makeApiGetCall, makeApiPostCall } from "./ApiCalls";
 import { FleetShip } from "../Views/Classes";
 
 
 //fetch names of ships for a user agent
-export async function fetchFleet(agentToken: string, setShipNames: Dispatch<SetStateAction<string[]>>) {
+export async function fetchFleet(agentToken: string, setShipData: Dispatch<SetStateAction<FleetShip[]>>) {
     const [json, status] = await makeApiGetCall(`my/ships`, agentToken);
 
     if (status) {
-        const shipNames: string[] = [];
-        const shipData = json.data;
-
-        // iterate through ships and make list of names for ease of access
-        for (const ship in shipData) {
-            shipNames.push(shipData[ship].symbol);
-        }
-
-        setShipNames(shipNames);
-    }
-    else {
-        console.error(json.error);
-    }
-}
-
-//fetch locations of ships for a user agent
-export async function fetchFleetLocations(agentToken: string, setShipNames: Dispatch<SetStateAction<string[]>>) {
-    const [json, status] = await makeApiGetCall(`my/ships`, agentToken);
-
-    if (status) {
-        const shipNames: string[] = [];
-        const shipData = json.data;
-
-        // iterate through ships and make list of names for ease of access
-        for (const ship in shipData) {
-            shipNames.push(shipData[ship].nav.systemSymbol);
-        }
-
-        setShipNames([...new Set(shipNames)]);
+        setShipData(json.data.map((ship: FleetShip) => ship));
     }
     else {
         console.error(json.error);
@@ -51,32 +23,40 @@ interface fetchShipPropTypes {
 }
 //function to fetch information on a user's ship based on designation
 export async function fetchShip({ agentToken, shipSymbol, setFleetShipDetails }: fetchShipPropTypes) {
-    const [json, status] = await makeApiGetCall(`my/ships/${shipSymbol}`, agentToken);
-
-    const fleetShipDetails: FleetShip = {
-        symbol: json.data.symbol,
-        registration: {
-            name: json.data.registration.name,
-            factionSymbol: json.data.registration.factionSymbol,
-            role: json.data.registration.role
-        },
-        cooldown: {
-            totalSeconds: json.data.cooldown.totalSeconds,
-            remainingSeconds: json.data.cooldown.remainingSeconds
-        },
-        nav: {
-            systemSymbol: json.data.nav.systemSymbol,
-            waypointSymbol: json.data.nav.waypointSymbol,
-            route: JSON.stringify(json.data.nav.route, null, 2),
-            status: json.data.nav.status,
-            flightMode: json.data.nav.flightMode
-        },
+    if (shipSymbol) {
+        const [json, status] = await makeApiGetCall(`my/ships/${shipSymbol}`, agentToken);
+        if (status && json.data) {
+            const fleetShipDetails:FleetShip = json.data;
+            setFleetShipDetails(fleetShipDetails)
+        }
+        else {
+            console.error(json.error);
+        }
     }
+}
+
+// interface for data types in doShipAction
+interface doShipActionPropTypes {
+    agentToken: string;
+    shipSymbol: string;
+    fleetShipDetails: FleetShip;
+    setFleetShipDetails: Dispatch<SetStateAction<FleetShip>>;
+    action: string;
+}
+// Negotiate a new contract using the specified ship
+export async function doShipAction({ agentToken, shipSymbol, fleetShipDetails, setFleetShipDetails, action }: doShipActionPropTypes) {
+    const currentShipDetails:FleetShip = fleetShipDetails;
+
+    // send request to create a new agent
+    const body = "";
+    const [json, status] = await makeApiPostCall(`my/ships/${shipSymbol}/${action}`, agentToken, body)
 
     if (status) {
-        setFleetShipDetails(fleetShipDetails)
+        const fleetShipDetails:FleetShip = { ...currentShipDetails, ...json.data};
+        setFleetShipDetails(fleetShipDetails)    
     }
     else {
         console.error(json.error);
     }
+
 }

@@ -19,6 +19,13 @@
     color: var(--aurora-black);
 }
 
+.fullWidthButton {
+    width: 100%;
+    height: 30px;
+    margin: 0px 0px 5px 0px;
+    background-color: var(--aurora-purple);
+}
+
 /* header information */
 #gameHeader{
     width: 100%;
@@ -80,25 +87,31 @@
 }
 
 /* ship information */
-#shipDetails{
-    width: 50%;
-    float: left;
+.shipInfoBox{
+margin: auto;
+padding: 1% 0;
 }
 
-#shipDetails td,th,table{
+.shipInfoBoxLeft{
+    width: 68%;
+    float: left;
+    padding: 0 1%;
+
+}
+
+.shipInfoBoxRight{
+    width: 28%;
+    float: right;
+    padding: 0 1%;
+
+}
+
+.shipInfoBox td,th,table{
     border: var(--fbc-borders);
 }
 
-#shipDetails td{
+.shipInfoBox td{
     padding: 5px;
-}
-
-/* waypoint information */
-#waypointData{
-    width: 50%;
-    max-width: 50%;
-    max-height: 100%;
-    float: right;
 }
 
 /* contract information */
@@ -122,4 +135,21 @@
 .activeMenuButton{
     background-color: var(--aurora-green);
     color: var(--aurora-black);
+}
+
+.noWrap {
+    white-space: nowrap; 
+}
+
+/* waypoint information */
+#waypointDetails{
+    min-width: 90%;
+}
+
+#waypointDetails td,th,table{
+    border: var(--fbc-borders);
+}
+
+#waypointDetails td{
+    padding: 5px;
 }
