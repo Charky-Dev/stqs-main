@@ -4,8 +4,7 @@ import FleetManagement from "./FleetManagement";
 
 it("renders", async () => {
     // Arrange
-    const agentToken = "testToken";
-    render(<FleetManagement agentToken={agentToken} />);
+    render(<FleetManagement/>);
 
     // Act
     await screen.findAllByRole("heading");

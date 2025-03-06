@@ -1,5 +1,5 @@
 import { useState, type Dispatch, type SetStateAction } from "react"
-import { fetchNewAgent } from "../ApiCalls"
+import { fetchNewAgent } from "../Api/ApiHandlingPlayer"
 import "../../assets/css/login.css"
 
 interface PropTypes {

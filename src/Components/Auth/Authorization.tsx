@@ -25,7 +25,7 @@ function Authorization() {
     // if there is a stored agent token (agent logged in)
     return (<ReturningPlayer agentToken={agentToken} />)
   }
-  else if (authType == "Returning") {
+  else if (authType === "Returning") {
     // if the user wishes to log in using an agent token
     return (
         <LogIn setAuthType={setAuthType} agentToken={agentToken} setAgentToken={setAgentToken} />

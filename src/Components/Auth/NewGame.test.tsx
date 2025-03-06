@@ -17,5 +17,5 @@ it("renders", async () => {
     // Assert
     expect(screen.getAllByRole("heading")[0]).toHaveTextContent("SpaceTraders");
     expect(screen.getAllByRole("heading")[1]).toHaveTextContent("New Game");
-    expect(authType == "New");
+    expect(authType === "New");
 })
