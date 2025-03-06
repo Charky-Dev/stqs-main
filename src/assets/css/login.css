@@ -1,0 +1,25 @@
+#loginBox {
+    background-color: #3b3a44;
+    border: var(--fbc-borders);
+    padding: 0px 10px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 40vw;
+}
+
+.fullWidthButton {
+    width: 100%;
+    height: 50px;
+    margin: 0px 0px 20px 0px;
+    background-color: var(--aurora-purple);
+}
+
+.helpText{
+    font-weight: bolder;
+    font-size: large;
+    color: var(--aurora-green);
+}
+
+.keyInput {
+    width: 95%;
+}

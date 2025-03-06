@@ -11,10 +11,12 @@ export default function ButtonMenu({currentView, setCurrentView}:PropTypes){
     //Map of required buttons to avoid duplication
     const buttonMap = ['Mission Dashboard', "Fleet Management", "Nothing 1", "Nothing 2"]
 
+    console.log(currentView);
+    console.log(String(currentView));
 return(
-    <>
+    <div id="buttonMenu">
     {/* map the list to individual menu buttons */}
-    {buttonMap.map((button) => <input key={button} type="button" className={currentView == String({button}) ? "ActiveMenuButton" : "MenuButton"} value={button} onClick={() => setCurrentView(button)}/>)}
-    </>
+    {buttonMap.map((button) => <input key={button} type="button" className={currentView == button ? "activeMenuButton" : "menuButton"} value={button} onClick={() => setCurrentView(button)}/>)}
+    </div>
 )
 }

@@ -6,12 +6,19 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
+  background-size: cover;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --aurora-pink:#7b2838;
+  --aurora-purple:#392c50;
+  --aurora-green:#7ca94a;
+  --aurora-grey:#3f494b;
+  --aurora-black:#080b10;
 }
 
 a {
