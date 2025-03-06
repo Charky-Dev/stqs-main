@@ -1,18 +1,41 @@
 import { type Dispatch, type SetStateAction } from "react"
-import { makeApiGetCall } from "./ApiCalls";
+import { makeApiGetCall, makeApiPostCall } from "./ApiCalls";
+import { ShippingContract } from "../Views/Classes";
+
 
 //fetch list of contracts for a user agent
-export async function fetchContractList(agentToken: string, setContractDetails: Dispatch<SetStateAction<{ contractId: string; contractFaction: string; paymentAcceptance: number; paymentDelivery: number; deliverTradeSymbol: string; deliverDestinationSymbol: string; deliverUnitsRequired: number; deliverUnitsFulfilled: number; contractType: string; contractAccepted: boolean; contractFulfilled: boolean; contractExpiration: Date; contractDeadline: Date; }[]>>) {
+export async function fetchContractList(agentToken: string, setContractDetails: Dispatch<SetStateAction<ShippingContract[]>>) {
     const [json, status] = await makeApiGetCall(`my/contracts`, agentToken);
     if (status) {
-        const contractList = [];
+        const contractList:ShippingContract[] = [];
         const contractData = json.data;
 
         // iterate through ships and make list of names for ease of access
         for (let i = 0; i < contractData.length; i++) {
             const contract = contractData[i];
-            console.log(contract);
-            const contractObject = { contractId: contract.id, contractFaction: contract.factionSymbol, paymentAcceptance: contract.terms.payment.onAccepted, paymentDelivery: contract.terms.payment.onFulfilled, deliverTradeSymbol: contract.terms.deliver[0].tradeSymbol, deliverDestinationSymbol: contract.terms.deliver[0].destinationSymbol, deliverUnitsRequired: contract.terms.deliver[0].unitsRequired, deliverUnitsFulfilled: contract.terms.deliver[0].unitsFulfilled, contractType: contract.type, contractAccepted: contract.accepted, contractFulfilled: contract.contractFulfilled, contractExpiration: contract.contractExpiration, contractDeadline: contract.contractDeadline };
+            const contractObject:ShippingContract = {
+                id: contract.id,
+                factionSymbol: contract.factionSymbol,
+                type: contract.type,
+                terms: {
+                    deadline: contract.terms.deadline,
+                    payment: {
+                      onAccepted: contract.terms.payment.onAccepted,
+                      onFulfilled: contract.terms.payment.onFulfilled
+                    },
+                    deliver: {
+                      tradeSymbol: contract.terms.deliver[0].tradeSymbol,
+                      destinationSymbol: contract.terms.deliver[0].destinationSymbol,
+                      unitsRequired: contract.terms.deliver[0].unitsRequired,
+                      unitsFulfilled: contract.terms.deliver[0].unitsFulfilled
+                    }
+                  },
+
+                  accepted: contract.accepted,
+                  fulfilled: contract.contractFulfilled,
+                  expiration: contract.contractExpiration,
+                  deadlineToAccept: contract.contractDeadline
+            };
             contractList.push(contractObject);
         }
         setContractDetails(contractList);
@@ -23,40 +46,27 @@ export async function fetchContractList(agentToken: string, setContractDetails: 
 }
 
 //accept the specified contract
-export async function fetchAcceptedContract(contractId: string, agentToken: string, setContractDetails: Dispatch<SetStateAction<{ contractId: string; contractFaction: string; paymentAcceptance: number; paymentDelivery: number; deliverTradeSymbol: string; deliverDestinationSymbol: string; deliverUnitsRequired: number; deliverUnitsFulfilled: number; contractType: string; contractAccepted: boolean; contractFulfilled: boolean; contractExpiration: Date; contractDeadline: Date; }[]>>) {
-    const resp = await fetch(`https://api.spacetraders.io/v2/my/contracts/${contractId}/accept`, {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${agentToken}`,
-            "Content-Type": "application/json",
-        }
-    })
-    const json = await resp.json();
+export async function fetchAcceptedContract(contractId: string, agentToken: string, setContractDetails: Dispatch<SetStateAction<ShippingContract[]>>) {
+    const [json, status] = await makeApiPostCall(`my/contracts/${contractId}/accept`, agentToken, "")
 
-    if (resp.ok) {
+    if (status) {
         fetchContractList(agentToken, setContractDetails);
     }
     else {
         console.error(json.error);
     }
+
 }
 
 // Negotiate a new contract using the specified ship
 export async function fetchNewContract(agentToken: string, shipSymbol: string, setCurrentView: Dispatch<SetStateAction<string>>) {
+    const [json, status] = await makeApiPostCall(`my/ships/${shipSymbol}/Negotiate/contract`, agentToken, "")
 
-    const resp = await fetch(`https://api.spacetraders.io/v2/my/ships/${shipSymbol}/Negotiate/contract`, {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${agentToken}`,
-            "Content-Type": "application/json",
-        }
-    })
-    const json = await resp.json();
-
-    if (resp.ok) {
+    if (status) {
         setCurrentView("Mission Dashboard")
     }
     else {
         console.error(json.error);
     }
+
 }

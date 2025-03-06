@@ -1,5 +1,5 @@
 import { type Dispatch, type SetStateAction } from "react"
-import { makeApiGetCall } from "./ApiCalls";
+import { makeApiGetCall, makeApiPostCall } from "./ApiCalls";
 
 // interface for data types in fetchNewAgent
 interface newAgentPropTypes {
@@ -14,26 +14,16 @@ export async function fetchNewAgent({ newUserForm, setAgentToken, setResp }: new
 
     try {
         // send request to create a new agent
-        const resp = await fetch(`https://api.spacetraders.io/v2/register`, {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${newUserForm.accountToken}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                symbol: newUserForm.symbol,
-                faction: newUserForm.faction,
-            }),
-        });
+        const body = JSON.stringify({ symbol: newUserForm.symbol, faction: newUserForm.faction });
+        const [json, status] = await makeApiPostCall(`register`, newUserForm.accountToken, body)
 
-        const json = await resp.json();
-
-        if (resp.ok) {
+        if (status) {
             // set the agent token for later use
             setAgentToken(json.data.token);
             setResp(JSON.stringify(json, null, 2));
         }
     }
+
     catch (e) {
         return ([{ error: e }, 400]);
     }

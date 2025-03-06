@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext } from "react";
-import { fetchFleet, fetchShip } from "../Api/ApiHandlingFleet"
-import { fetchWaypoint} from "../Api/ApiHandlingWaypoint"
-import { fetchNewContract } from "../Api/ApiHandlingContract"
-import { AgentTokenContext, PageViewContext } from "../globalContext";
+import { fetchFleet, fetchShip } from "../../Api/ApiHandlingFleet"
+import { fetchWaypoint} from "../../Api/ApiHandlingWaypoint"
+import { fetchNewContract } from "../../Api/ApiHandlingContract"
+import { AgentTokenContext, PageViewContext } from "../../GlobalContext";
+import { FleetShip, WaypointProfile } from "../Classes";
 
 export default function FleetManagement() {
     const [shipNames, setShipNames] = useState([""]); //list of the player's ships for quick reference
@@ -32,21 +33,19 @@ export default function FleetManagement() {
 
 //Fetch and render details of a specified ship
 export function ShipDetails({ shipSymbol }: { shipSymbol: string; }) {
-    const [shipRegistration, setShipRegistration] = useState({ name: "", factionSymbol: "", role: "" });
-    const [shipCooldown, setShipCooldown] = useState({ totalSeconds: 0, remainingSeconds: 0 });
-    const [shipNav, setShipNav] = useState({ systemSymbol: "", waypointSymbol: "", route: "", status: "", flightMode: "" });
+    const [fleetShipDetails, setFleetShipDetails] = useState(new FleetShip);
     const setCurrentView = useContext(PageViewContext)[1]; // import page state from context
     const agentToken = useContext(AgentTokenContext); //Fetch agent token from context
 
     useEffect(() => {
-        fetchShip({ agentToken, shipSymbol, setShipRegistration, setShipCooldown, setShipNav });
-    }, [agentToken, shipSymbol, setShipRegistration, setShipCooldown, setShipNav]);
+        fetchShip({ agentToken, shipSymbol, setFleetShipDetails });
+    }, [agentToken, shipSymbol, setFleetShipDetails]);
 
     return (
         <>
             <div id="shipDetails">
                 <h3>Ship Details:</h3>
-                {shipRegistration && shipCooldown &&
+                {fleetShipDetails &&
                     <section>
                         <table>
                             <thead>
@@ -60,20 +59,20 @@ export function ShipDetails({ shipSymbol }: { shipSymbol: string; }) {
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{shipRegistration.name}</td>
-                                    <td>{shipRegistration.factionSymbol}</td>
-                                    <td>{shipRegistration.role}</td>
-                                    <td>{shipCooldown.totalSeconds}</td>
-                                    <td>{shipCooldown.remainingSeconds}</td>
+                                    <td>{fleetShipDetails.registration.name}</td>
+                                    <td>{fleetShipDetails.registration.factionSymbol}</td>
+                                    <td>{fleetShipDetails.registration.role}</td>
+                                    <td>{fleetShipDetails.cooldown.totalSeconds}</td>
+                                    <td>{fleetShipDetails.cooldown.remainingSeconds}</td>
                                 </tr>
                             </tbody>
                         </table>
-                        { ["COMMAND", "SATELLITE"].includes(shipRegistration.role) ? null :
-                        <input type="button" className="fullWidthButton"value="Negotiate New Contract" onClick={() => fetchNewContract(agentToken, shipRegistration.name, setCurrentView)}/>
+                        { ["COMMAND", "SATELLITE"].includes(fleetShipDetails.registration.role) ? null :
+                        <input type="button" className="fullWidthButton"value="Negotiate New Contract" onClick={() => fetchNewContract(agentToken, fleetShipDetails.registration.name, setCurrentView)}/>
                         }
                     </section>}
             </div>
-            <WaypointDetails agentToken={agentToken} systemSymbol={shipNav.systemSymbol} waypointSymbol={shipNav.waypointSymbol} />
+            <WaypointDetails agentToken={agentToken} systemSymbol={fleetShipDetails.nav.systemSymbol} waypointSymbol={fleetShipDetails.nav.waypointSymbol} />
 
         </>
     )
@@ -87,17 +86,23 @@ interface waypointPropTypes {
 }
 //Fetch details about a given waypoint
 export function WaypointDetails({ agentToken, systemSymbol, waypointSymbol }: waypointPropTypes) {
-    const [waypointDetails, setWaypointDetails] = useState("");
+    const [waypointDetails, setWaypointDetails] = useState(new WaypointProfile);
 
     useEffect(() => {
         fetchWaypoint({ agentToken, systemSymbol, waypointSymbol, setWaypointDetails });
     }, [agentToken, systemSymbol, waypointSymbol, setWaypointDetails]);
 
+    const waypointTraits = [];
+    for (let i = 0; i < waypointDetails.traits.length; i++){
+        waypointTraits.push(waypointDetails.traits[i].symbol);
+    }
 
     return (
         <div id="waypointData">
-            <h3>Waypoint Data:</h3>
-            <pre>{waypointDetails}</pre>
+            <h3>Location Summary:</h3>
+            <pre>{waypointDetails.systemSymbol} ({waypointDetails.faction.symbol})</pre>
+            <pre>{waypointDetails.type}{waypointDetails.isUnderConstruction && <> - Under Construction</>} </pre>
+            <div>{waypointTraits.map(trait => <span> {trait};</span>)}</div>
 
         </div>)
 }

@@ -1,5 +1,16 @@
 # STQS
 
+## Developer Notes
+I chose to spend a little more time on this than was probably expected. Partly this was because I have been genuinely enjoying myself, and am continuing to develop my frontend for fun - I would like to actually play the game. I am particularly excited about the idea of implementing a map of the galaxy, so I am currently working towards that goal.
+Another reason, however, is that the exercise has been quite informative. Completing this exercise in a relatively pure version of react has taught me that my employer's current React implementation is quite non-standard. It has also improved my understanding of the underlying framework, without having a long list of packages to navigate.
+
+I chose to spend time implementing a login system before working on the actual quickstart. My reasons for this were:
+- I believe the api has changed since this task was first issued; you can no longer fetch an account api key directly from the provided quickstart app.
+- I felt that needing to create a new agent each time the page was refreshed was an inappropriate drain on the SpaceTraders server, and wanted to log in as an agent I had already created.
+- I would not be violating basic security principles by embedding my account API key into the codebase, so I would need you to provide your own account API keys. The updated instructions for doing so should be embedded into the login / signup form.
+
+I have tried to create a simple but effective user interface. The icons and photos used are all my own, to avoid copyright issues.
+
 ## Goal
 Your goal is to visit [SpaceTraders.io](https://docs.spacetraders.io/quickstart/new-game) and implement as many features from the quickstart as you feel able to.
 

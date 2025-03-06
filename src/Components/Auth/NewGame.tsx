@@ -58,8 +58,8 @@ export default function NewGame({ setAuthType, accountToken, agentToken, setAgen
                         const tokenRegex = /[A-Za-z0-9.\-_]{500,550}/;
 
                         if (!newUserForm.symbol.match(agentRegex)) {
-                            const errorBody = "{ \"error\": { \"message\": \"user agent should only contain letters, numbers, hyphens and underscores\"}}";
-                            const errorSettings = { status: 400, statusText:  "user agent should only contain letters, numbers, hyphens and underscores"};
+                            const errorBody = "{ \"error\": { \"message\": \"user agent should only contain letters, numbers, hyphens, underscores and full stops\"}}";
+                            const errorSettings = { status: 400, statusText:  "user agent should only contain letters, numbers, hyphens, underscores and full stops"};
                             const errorResponse = new Response(errorBody, errorSettings);
                             setResp(JSON.stringify(errorResponse.statusText, null, 2));
                         }
