@@ -4,7 +4,7 @@
     padding: 0px 10px;
     border-radius: 10px;
     text-align: center;
-    max-width: 40vw;
+    max-width: 25vw;
 }
 
 .fullWidthButton {
@@ -22,4 +22,8 @@
 
 .keyInput {
     width: 95%;
+}
+
+#accountDetails{
+    overflow-x: auto;
 }

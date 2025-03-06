@@ -7,8 +7,9 @@ it("renders", async () => {
     render(<Authorization />)
 
     // Act
-    await screen.findByRole("heading");
+    await screen.findAllByRole("heading");
 
     // Assert
-    expect(screen.getByRole("heading")).toHaveTextContent("New Game");
+    expect(screen.getAllByRole("heading")[0]).toHaveTextContent("SpaceTraders");
+    expect(screen.getAllByRole("heading")[1]).toHaveTextContent("New Game");
 })

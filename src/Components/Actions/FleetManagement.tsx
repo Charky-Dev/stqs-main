@@ -12,7 +12,7 @@ export default function FleetManagement(agentToken: { agentToken: string; }) {
 
     return (
         <>
-            <h2>Fleet Managment</h2>
+            <h2>Fleet Management</h2>
             <div id="fleetList">
                 {/* map all ships to buttons so player can choose to view more information */}
                 {shipNames.map((ship) => <input key={ship} type="button" className={currentShip == String({ ship }) ? "ActiveMenuButton" : "MenuButton"} value={ship} onClick={() => setCurrentShip(ship)} />)}
@@ -27,7 +27,7 @@ export default function FleetManagement(agentToken: { agentToken: string; }) {
 }
 
 //fetch and render details of a specified ship
-function ShipDetails({ shipSymbol, agentToken }: { shipSymbol: string; agentToken: string }) {
+export function ShipDetails({ shipSymbol, agentToken }: { shipSymbol: string; agentToken: string }) {
     const [shipRegistration, setShipRegistration] = useState({ name: "", factionSymbol: "", role: "" });
     const [shipCooldown, setShipCooldown] = useState({ totalSeconds: 0, remainingSeconds: 0 });
     const [shipNav, setShipNav] = useState({ systemSymbol: "", waypointSymbol: "", route: "", status: "", flightMode: "" });
@@ -87,7 +87,7 @@ interface waypointPropTypes {
     waypointSymbol: string
 }
 //fetch details about a given waypoint
-function WaypointDetails({ agentToken, systemSymbol, waypointSymbol }: waypointPropTypes) {
+export function WaypointDetails({ agentToken, systemSymbol, waypointSymbol }: waypointPropTypes) {
     const [waypointDetails, setWaypointDetails] = useState("");
 
     useEffect(() => {
@@ -103,6 +103,6 @@ function WaypointDetails({ agentToken, systemSymbol, waypointSymbol }: waypointP
         </div>)
 }
 
-function FetchNewContract() {
+export function FetchNewContract() {
     return (<></>)
 }
