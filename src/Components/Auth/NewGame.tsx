@@ -27,7 +27,7 @@ export default function NewGame({ setAuthType, accountToken, agentToken, setAgen
                 </div>
                 <div>
                     {/* Allow user to log in using token from account */}
-                    <input type="button" className="fullWidthButton" value="Log in instead" onClick={() => setAuthType("Returning")}></input>
+                    <input type="button" className="logInButton" value="Log in instead" onClick={() => setAuthType("Returning")}></input>
                     <br />
                     {/* input for the player's name identifier */}
                     <label htmlFor="symbol">Call Sign:</label>&nbsp;
@@ -51,7 +51,7 @@ export default function NewGame({ setAuthType, accountToken, agentToken, setAgen
                             </>
                     }
                     <br />
-                    <input type="submit" className="fullWidthButton" onClick={() => {
+                    <input type="submit" className="logInButton" onClick={() => {
                         // send api request and fetch new user details
                         const agentRegex = /[A-Za-z0-9_-]{3,12}/;
                         const factionRegex = /[A-Za-z ]{0,30}/;

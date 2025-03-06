@@ -3,6 +3,7 @@ import ButtonMenu from "./Views/ButtonMenu";
 import MissionDashboard from "./Views/Mission Dashboard/MissionDashboard";
 import FleetManagement from "./Views/Fleet Management/FleetManagement";
 import Shipyard from "./Views/Shipyard/Shipyard";
+import Navigation from "./Views/Navigation/Navigation";
 import { fetchReturningPlayer } from "./Api/ApiHandlingPlayer";
 import { AgentTokenContext, PageViewContext } from "./GlobalContext";
 import logo from "../assets/images/spacetraders.ico"
@@ -47,6 +48,7 @@ export default function ReturningPlayer(apiToken: { agentToken: string; }) {
                             {currentView === "Mission Dashboard" && <MissionDashboard />}
                             {currentView === "Fleet Management" && <FleetManagement />}
                             {currentView === "Shipyard" && <Shipyard />}
+                            {currentView === "Navigation" && <Navigation />}
                         </div>
                     </PageViewContext.Provider>
                 </div>

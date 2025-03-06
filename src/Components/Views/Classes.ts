@@ -37,16 +37,45 @@ export class FleetShip {
   nav = {
     systemSymbol: "",
     waypointSymbol: "",
-    route: {},
+    route: {
+      origin: {
+      symbol: "", type: "", systemSymbol: "", x: 0, y: 0 
+    },
+      destination: { 
+        symbol: "", type: "", systemSymbol: "", x: 0, y: 0
+      },
+      arrival: Date(), 
+      departureTime: Date(),
+     },
     status: "",
     flightMode: ""
   };
+  fuel = {
+    current: 0,
+    capacity: 0,
+    consumed: {
+      amount: 0,
+      timestamp: Date(),
+    }
+  };
+  cargo = {
+      capacity: 0,
+      units: 0,
+      inventory: [
+        {
+          symbol: "",
+          name: "",
+          description: "",
+          units: 0
+        }
+      ]
+    };
 }
 
 //Shipyard object for shipyard dashboard
 export class ShipyardStock {
   shipType = "";
-  shipName = "";
+  shipSymbol = "";
   shipDescription = "";
   shipSupply = "";
   shipyardWaypointSymbol = "";

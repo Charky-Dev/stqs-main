@@ -1,31 +1,32 @@
 import { useState, useEffect, useContext } from "react";
-import { fetchFleetLocations } from "../../Api/ApiHandlingFleet"
+import { fetchFleet } from "../../Api/ApiHandlingFleet"
 import { fetchAllShipyards, fetchShipyardShips, fetchNewShip} from "../../Api/ApiHandlingWaypoint"
 import { AgentTokenContext, PageViewContext } from "../../GlobalContext";
-import { ShipyardStock } from "../Classes";
+import { ShipyardStock, FleetShip } from "../Classes";
 
 export default function Shipyard() {
-    const [shipyardNames, setShipyardNames] = useState([{ shipyardName: "", shipyardWaypoint: "" }]); //list of the player's shipyards for quick reference
+    const [shipData, setShipData] = useState([new FleetShip]); //list of the player's ships
+    const [shipyardNames, setShipyardNames] = useState([{ shipyardName: "", shipyardWaypoint: "" }]); //list of the player's shipyards
     const [currentShipyard, setCurrentShipyard] = useState({ shipyardName: "", shipyardWaypoint: "" }); //information about currently selected shipyard
-    const [shipLocations, setShipLocations] = useState([""]); //list of the player's ships for quick reference
     const agentToken = useContext(AgentTokenContext); //Fetch agent token from context
 
     // Fetch information about the player's ships from the api
     useEffect(() => {
-        fetchFleetLocations(agentToken, setShipLocations);
-    }, [agentToken, setShipLocations]);
+        fetchFleet(agentToken, setShipData);
+    }, [agentToken, setShipData]);
 
     // Fetch information about the player's shipyards from the api
     useEffect(() => {
+        const shipLocations = shipData.map((ship: FleetShip) => ship.nav.systemSymbol);
         fetchAllShipyards({agentToken, shipLocations, setShipyardNames});
-    }, [agentToken, shipLocations, setShipyardNames]);
+    }, [agentToken, shipData, setShipyardNames]);
     
     return (
         <>
-            <h2>View</h2>
+            <h2>Local Shipyards</h2>
             <div id="fleetList">
                 {/* map all shipyards to buttons so player can choose to view more information */}
-                {shipyardNames.map(({ shipyardName, shipyardWaypoint }) => <input key={shipyardName} type="button" className={currentShipyard.shipyardName == shipyardName ? "activeGenericButton" : "genericButton"} value={shipyardName} onClick={() => setCurrentShipyard({ shipyardName, shipyardWaypoint })} />)}
+                {shipyardNames.map(({ shipyardName, shipyardWaypoint }) => <input key={shipyardName} type="button" className={currentShipyard.shipyardName === shipyardName ? "activeGenericButton" : "genericButton"} value={shipyardName} onClick={() => setCurrentShipyard({ shipyardName, shipyardWaypoint })} />)}
             </div>
             <div id="shipyardOverview">
                 {/* Fetch information about the currently selected shipyard */}
@@ -69,7 +70,7 @@ function ShipyardDetails({ shipyardWaypointSymbol, systemSymbol }: { shipyardWay
                     </thead>
                     <tbody>
                         {/* map all ships to buttons so player can choose to view more information */}
-                        {shipyardStock.map((ship:ShipyardStock) => <ShipDetails shipyardShip={ship} />)}
+                        {shipyardStock.map((ship:ShipyardStock) => <ShipDetails key={ship.shipType} shipyardShip={ship} />)}
                     </tbody>
                 </table>
             }
@@ -86,12 +87,12 @@ function ShipDetails({shipyardShip}:{shipyardShip: ShipyardStock}) {
         const shipProps = {agentToken:agentToken, shipType:shipyardShip.shipType, shipyardWaypointSymbol:shipyardShip.shipyardWaypointSymbol, setCurrentView:setCurrentView[1]};
 
         return (
-            <tr key={shipyardShip.shipName}>
+            <tr key={shipyardShip.shipSymbol}>
                 <td>
-                    {shipyardShip.shipType}
+                    {shipyardShip.shipType.replace(/_/g," ")}
                 </td>
                 <td>
-                    {shipyardShip.shipName}
+                    {shipyardShip.shipSymbol}
                 </td>
                 <td>
                     {shipyardShip.shipDescription}

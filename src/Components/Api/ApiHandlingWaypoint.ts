@@ -3,22 +3,48 @@ import { makeApiGetCall, makeApiPostCall } from "./ApiCalls";
 import { ShipyardStock, WaypointProfile } from "../Views/Classes";
 
 // interface for data types in fetchAgentDetails
-interface fetchWaypointPropTypes {
+interface fetchWaypointDetailsPropTypes {
     agentToken: string;
     systemSymbol: string;
     waypointSymbol: string;
     setWaypointDetails: Dispatch<SetStateAction<WaypointProfile>>;
 }
 //fetch details of waypoint specified
-export async function fetchWaypoint({ agentToken, systemSymbol, waypointSymbol, setWaypointDetails }: fetchWaypointPropTypes) {
-    const [json, status] = await makeApiGetCall(`systems/${systemSymbol}/waypoints/${waypointSymbol}`, agentToken);
+export async function fetchWaypointDetails({ agentToken, systemSymbol, waypointSymbol, setWaypointDetails }: fetchWaypointDetailsPropTypes) {
+    if (systemSymbol && waypointSymbol) {
+        const [json, status] = await makeApiGetCall(`systems/${systemSymbol}/waypoints/${waypointSymbol}`, agentToken);
 
-    if (status) {
-        setWaypointDetails(json.data);
+        if (status) {
+            setWaypointDetails(json.data);
+        }
+        else {
+            console.error(json.error);
+        }
     }
-    else {
-        console.error(json.error);
+}
+
+// interface for data types in fetchAllShipyards
+interface fetchWaypointsPropTypes {
+    agentToken: string;
+    shipLocations: string[];
+    filters: string;
+}
+// Locate all shipyards in area
+export async function fetchWaypoints({ agentToken, shipLocations, filters }: fetchWaypointsPropTypes) {
+    for (const location of shipLocations) {
+        if (location) {
+            const [json, status] = await makeApiGetCall(`systems/${location}/waypoints?${filters}`, agentToken);
+
+            if (status) {
+                const waypointData = json.data;
+                return (waypointData.map((waypoint: WaypointProfile) => waypoint));
+            }
+            else {
+                console.error(json.error);
+            }
+        }
     }
+
 }
 
 // interface for data types in fetchAllShipyards
@@ -30,25 +56,32 @@ interface fetchAllShipyardsPropTypes {
 // Locate all shipyards in area
 export async function fetchAllShipyards({ agentToken, shipLocations, setShipyardNames }: fetchAllShipyardsPropTypes) {
     const shipyardNames: SetStateAction<{ shipyardName: string; shipyardWaypoint: string; }[]> = [];
+    const filters = "traits=SHIPYARD"
+    const shipyardData: WaypointProfile[] = await fetchWaypoints({ agentToken, shipLocations, filters });
 
-    for (const location in shipLocations) {
-        const [json, status] = await makeApiGetCall(`systems/${shipLocations[location]}/waypoints?traits=SHIPYARD`, agentToken);
-
-        if (status) {
-            const shipyardData = json.data;
-
-            // iterate through shipyards and make list of names for ease of access
-            for (const shipyard in shipyardData) {
-                shipyardNames.push(
-                    { shipyardName: shipyardData[shipyard].symbol, shipyardWaypoint: shipyardData[shipyard].systemSymbol });
-            }
-
-        }
-        else {
-            console.error(json.error);
+    if (shipyardData) {
+        // iterate through shipyards and make list of names for ease of access
+        for (const shipyard of shipyardData as WaypointProfile[]) {
+            shipyardNames.push(
+                { shipyardName: shipyard.symbol, shipyardWaypoint: shipyard.systemSymbol });
         }
     }
+
     setShipyardNames(shipyardNames);
+
+}
+
+// interface for data types in fetchAllWaypoints
+interface fetchAllWaypointsPropTypes {
+    agentToken: string;
+    shipLocations: string[];
+    setWaypointDetails: Dispatch<SetStateAction<WaypointProfile[]>>;
+}
+// Locate all waypoints in area and return as list of WaypointProfiles
+export async function fetchAllWaypoints({ agentToken, shipLocations, setWaypointDetails }: fetchAllWaypointsPropTypes) {
+    const filters = ""
+    const waypointData: WaypointProfile[] = await fetchWaypoints({ agentToken, shipLocations, filters });
+    setWaypointDetails(waypointData);
 
 }
 
@@ -61,35 +94,50 @@ interface fetchShipyardShipsPropTypes {
 }
 //fetch list of ships for a shipyard
 export async function fetchShipyardShips({ agentToken, systemSymbol, shipyardWaypointSymbol, setShipyardStock }: fetchShipyardShipsPropTypes) {
-    const [json, status] = await makeApiGetCall(`systems/${systemSymbol}/waypoints/${shipyardWaypointSymbol}/shipyard`, agentToken);
-    if (status) {
-        const shipyardData = json.data.ships;
-        if (shipyardData) {
-            const shipyardList = [];
+    if (systemSymbol && shipyardWaypointSymbol) {
+        const [json, status] = await makeApiGetCall(`systems/${systemSymbol}/waypoints/${shipyardWaypointSymbol}/shipyard`, agentToken);
+        if (status) {
+            const shipyardData = json.data.ships;
+            if (shipyardData) {
+                const shipyardList = [];
 
-            // iterate through ships and make list of names for ease of access
-            for (let i = 0; i < shipyardData.length; i++) {
-                const ship = shipyardData[i];
-                const shipyardObject: ShipyardStock = { shipType: ship.type, shipName: ship.name, shipDescription: ship.description, shipSupply: ship.supply, shipPurchasePrice: ship.purchasePrice, shipyardWaypointSymbol: shipyardWaypointSymbol };
-                shipyardList.push(shipyardObject);
+                // iterate through ships and make list of names for ease of access
+                for (let i = 0; i < shipyardData.length; i++) {
+                    const ship = shipyardData[i];
+                    const shipyardObject: ShipyardStock = {
+                        shipType: ship.type,
+                        shipSymbol: ship.name,
+                        shipDescription: ship.description,
+                        shipSupply: ship.supply,
+                        shipPurchasePrice: ship.purchasePrice,
+                        shipyardWaypointSymbol: shipyardWaypointSymbol
+                    };
+                    shipyardList.push(shipyardObject);
+                }
+                setShipyardStock(shipyardList);
             }
-            setShipyardStock(shipyardList);
-            setShipyardStock(shipyardData.values().map());
+            else {
+                const shipyardList = [];
+                const shipyardSummary = json.data.shipTypes;
+                // iterate through ships and make list of names for ease of access
+                for (let i = 0; i < shipyardSummary.length; i++) {
+                    const ship = shipyardSummary[i];
+                    const shipyardObject: ShipyardStock = {
+                        shipType: ship.type,
+                        shipSymbol: "unknown",
+                        shipDescription: "Visit shipyard for more details",
+                        shipSupply: "unknown",
+                        shipPurchasePrice: 0,
+                        shipyardWaypointSymbol: shipyardWaypointSymbol
+                    };
+                    shipyardList.push(shipyardObject);
+                }
+                setShipyardStock(shipyardList);
+            }
         }
         else {
-            const shipyardList = [];
-            const shipyardSummary = json.data.shipTypes;
-            // iterate through ships and make list of names for ease of access
-            for (let i = 0; i < shipyardSummary.length; i++) {
-                const ship = shipyardSummary[i];
-                const shipyardObject: ShipyardStock = { shipType: ship.type, shipName: "unknown", shipDescription: "Visit shipyard for more details", shipSupply: "unknown", shipPurchasePrice: 0, shipyardWaypointSymbol: shipyardWaypointSymbol };
-                shipyardList.push(shipyardObject);
-            }
-            setShipyardStock(shipyardList);
+            console.error(json.error);
         }
-    }
-    else {
-        console.error(json.error);
     }
 }
 

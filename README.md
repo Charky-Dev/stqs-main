@@ -11,6 +11,8 @@ I chose to spend time implementing a login system before working on the actual q
 
 I have tried to create a simple but effective user interface. The icons and photos used are all my own, to avoid copyright issues.
 
+I intend to host the app at [http://charky.co.uk/spacetraders](http://charky.co.uk/spacetraders) at some point in the near future.
+
 ## Goal
 Your goal is to visit [SpaceTraders.io](https://docs.spacetraders.io/quickstart/new-game) and implement as many features from the quickstart as you feel able to.
 

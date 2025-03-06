@@ -21,14 +21,14 @@ export default function LogIn({ agentToken, setAuthType, setAgentToken }: PropTy
           <h2>Returning User</h2>
         </div>
         <div>
-          <input className="fullWidthButton" type="button" value="Start New Game" onClick={() => setAuthType("New")}></input>
+          <input className="logInButton" type="button" value="Start New Game" onClick={() => setAuthType("New")}></input>
           <br />
           {/* input the player's Account key */}
           <label htmlFor="agentToken">Please enter your Agent token:</label>
           <span className="helpText" title="This can be generated in your account settings on httm://my.spacetraders.io/agents"> ? </span>
-          <textarea className="keyInput" id="fullWidthButton" name="agentToken" value={returningUserForm.agentToken} onChange={(e) => setReturningUserForm({ ...returningUserForm, agentToken: e.currentTarget.value })} />
+          <textarea className="keyInput" id="logInButton" name="agentToken" value={returningUserForm.agentToken} onChange={(e) => setReturningUserForm({ ...returningUserForm, agentToken: e.currentTarget.value })} />
 
-          <input className="fullWidthButton" type="submit" onClick={() => {
+          <input className="logInButton" type="submit" onClick={() => {
             const tokenRegex = /[A-Za-z0-9.\-_]{500,550}/;
 
             if (!returningUserForm.agentToken.match(tokenRegex)) {
