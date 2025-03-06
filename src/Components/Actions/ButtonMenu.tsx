@@ -12,7 +12,7 @@ export default function ButtonMenu({currentView, setCurrentView}:PropTypes){
 
 return(
     <>
-    {buttonMap.map((button) => <input type="button" className={currentView == String({button}) ? "ActiveMenuButton" : "MenuButton"} value={button} onClick={() => setCurrentView(button)}/>)}
+    {buttonMap.map((button) => <input key={button} type="button" className={currentView == String({button}) ? "ActiveMenuButton" : "MenuButton"} value={button} onClick={() => setCurrentView(button)}/>)}
     </>
 )
 }
