@@ -1,12 +1,12 @@
 import { useState, Dispatch, SetStateAction } from "react"
 
 interface PropTypes {
-    setAuthType: Dispatch<SetStateAction<string>>; 
-    agentToken: string; 
-    setAgentToken: Dispatch<SetStateAction<string>>;
+  setAuthType: Dispatch<SetStateAction<string>>;
+  agentToken: string;
+  setAgentToken: Dispatch<SetStateAction<string>>;
 }
 
-export default function LogIn( { agentToken, setAuthType, setAgentToken }: PropTypes) {
+export default function LogIn({ agentToken, setAuthType, setAgentToken }: PropTypes) {
 
   const [returningUserForm, setReturningUserForm] = useState({ agentToken: agentToken });
   const [resp, setResp] = useState("");
@@ -22,7 +22,7 @@ export default function LogIn( { agentToken, setAuthType, setAgentToken }: PropT
 
       <input type="submit" onClick={async () => {
 
-        localStorage.setItem('agentToken', JSON.stringify(returningUserForm.agentToken));
+        sessionStorage.setItem('agentToken', JSON.stringify(returningUserForm.agentToken));
 
         const resp = await fetch("https://api.spacetraders.io/v2/my/agent", {
           method: "GET",
@@ -35,11 +35,10 @@ export default function LogIn( { agentToken, setAuthType, setAgentToken }: PropT
         const json = await resp.json();
 
         if (resp.ok) {
-          setAgentToken(returningUserForm.agentToken)
-          localStorage.setItem('agentToken', JSON.stringify(returningUserForm.agentToken));
+          setResp(JSON.stringify(json, null, 2));
+          setAgentToken(returningUserForm.agentToken);
         }
 
-        setResp(JSON.stringify(json, null, 2))
       }} />
       <pre>Agent token: {agentToken}</pre>
       <pre>Response: {resp}</pre>

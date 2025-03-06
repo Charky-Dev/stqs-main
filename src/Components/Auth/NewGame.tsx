@@ -1,20 +1,25 @@
 import { useState, Dispatch, SetStateAction } from "react"
 
 interface PropTypes {
-    setAuthType: Dispatch<SetStateAction<string>>; 
-    accountToken: string; 
-    agentToken: string; 
+    setAuthType: Dispatch<SetStateAction<string>>;
+    accountToken: string;
+    agentToken: string;
     setAgentToken: Dispatch<SetStateAction<string>>;
 }
 
 export default function NewGame({ setAuthType, accountToken, agentToken, setAgentToken }: PropTypes) {
 
+    // Outline required information for New User form
     const [newUserForm, setNewUserForm] = useState({ symbol: "", faction: "COSMIC", accountToken: accountToken });
+
+    //Store response to user creation request
     const [resp, setResp] = useState("");
 
     return (
         <>
             <h1>New Game</h1>
+
+            {/* Allow user to log in using token from account */}
             <input type="button" value="Log in instead" onClick={() => setAuthType("Returning")}></input>
 
             {/* input for the player's name identifier */}
@@ -25,6 +30,7 @@ export default function NewGame({ setAuthType, accountToken, agentToken, setAgen
             <label htmlFor="faction">Faction:</label>
             <input name="faction" value={newUserForm.faction} onChange={(e) => setNewUserForm({ ...newUserForm, faction: e.currentTarget.value })} />
 
+            {/* only show account token box if this is not already stored */}
             {
                 accountToken ? null :
                     <>
@@ -35,9 +41,10 @@ export default function NewGame({ setAuthType, accountToken, agentToken, setAgen
                     </>
             }
             <input type="submit" onClick={async () => {
-
+                // save this to session storage to persist after an accidental refresh
                 localStorage.setItem('accountToken', JSON.stringify(newUserForm.accountToken));
 
+                // send request to create a new agent
                 const resp = await fetch("https://api.spacetraders.io/v2/register", {
                     method: "POST",
                     headers: {
@@ -53,11 +60,11 @@ export default function NewGame({ setAuthType, accountToken, agentToken, setAgen
                 const json = await resp.json();
 
                 if (resp.ok) {
+                    // set the agent token for later use
                     setAgentToken(json.data.token)
-                    localStorage.setItem('accountToken', JSON.stringify(newUserForm.accountToken));
+                    setResp(JSON.stringify(json, null, 2))
                 }
 
-                setResp(JSON.stringify(json, null, 2))
             }} />
             <pre>Account token: {accountToken}</pre>
             <pre>Agent token: {agentToken}</pre>
