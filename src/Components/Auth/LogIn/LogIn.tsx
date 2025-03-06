@@ -1,6 +1,6 @@
 import { useState, Dispatch, SetStateAction } from "react"
-import { fetchAgentDetails } from "../Api/ApiHandlingPlayer"
-import "../../assets/css/login.css"
+import { fetchAgentDetails } from "../../../Utils/Api/ApiHandlingPlayer";
+import "../../../Assets/css/login.css"
 
 interface PropTypes {
   setAuthType: Dispatch<SetStateAction<string>>;
@@ -44,6 +44,7 @@ export default function LogIn({ agentToken, setAuthType, setAgentToken }: PropTy
         </div>
         <div id="accountDetails">
           <pre>Response: {resp}</pre>
+          <pre>Token: {agentToken}</pre>
         </div>
       </div>
     </div>

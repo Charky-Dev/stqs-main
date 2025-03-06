@@ -1,5 +1,5 @@
 import { type Dispatch, type SetStateAction } from "react"
-import { makeApiGetCall, makeApiPostCall } from "./ApiCalls";
+import { makeApiGetCall, makeApiPostCall } from "./ApiWrappers";
 
 // interface for data types in fetchNewAgent
 interface newAgentPropTypes {

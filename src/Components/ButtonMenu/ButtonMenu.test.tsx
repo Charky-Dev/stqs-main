@@ -4,8 +4,7 @@ import ButtonMenu from "./ButtonMenu";
 
 it("renders", async () => {
     // Arrange
-    const [currentView, setCurrentView] = ["Mission Dashboard", () => {return null}];
-    render(<ButtonMenu currentView={currentView} setCurrentView={setCurrentView} />)
+    render(<ButtonMenu />)
 
     // Act
     await screen.findAllByRole("button");

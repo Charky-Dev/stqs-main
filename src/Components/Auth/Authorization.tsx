@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
-import ReturningPlayer from "../ReturningPlayer";
-import LogIn from "./LogIn";
-import NewGame from "./NewGame";
+import ViewHandler from "../../Views/Authorization/ViewHandler";
+import LogIn from "./LogIn/LogIn";
+import NewGame from "./NewGame/NewGame";
 
 function Authorization() {
   const [agentToken, setAgentToken] = useState("");
@@ -23,7 +23,7 @@ function Authorization() {
 
   if (agentToken) {
     // if there is a stored agent token (agent logged in)
-    return (<ReturningPlayer agentToken={agentToken} />)
+    return (<ViewHandler agentToken={agentToken} />)
   }
   else if (authType === "Returning") {
     // if the user wishes to log in using an agent token

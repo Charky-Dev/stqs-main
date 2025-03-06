@@ -1,6 +1,6 @@
 import { useState, type Dispatch, type SetStateAction } from "react"
-import { fetchNewAgent } from "../Api/ApiHandlingPlayer"
-import "../../assets/css/login.css"
+import { fetchNewAgent } from "../../../Utils/Api/ApiHandlingPlayer";
+import "../../../Assets/css/login.css"
 
 interface PropTypes {
     setAuthType: Dispatch<SetStateAction<string>>;

@@ -1,12 +1,14 @@
 import { useState, useEffect, useContext, type Dispatch, type SetStateAction } from "react";
-import { doShipAction, fetchFleet, fetchShip } from "../../Api/ApiHandlingFleet"
-import { fetchWaypointDetails } from "../../Api/ApiHandlingWaypoint"
-import { fetchNewContract } from "../../Api/ApiHandlingContract"
-import { AgentTokenContext, PageViewContext } from "../../GlobalContext";
-import { FleetShip, WaypointProfile } from "../Classes";
+import { doShipAction, fetchFleet, fetchShip } from "../../../Utils/Api/ApiHandlingFleet"
+import { fetchWaypointDetails } from "../../../Utils/Api/ApiHandlingWaypoint";
+import { fetchContractList, fetchNewContract } from "../..//../Utils/Api/ApiHandlingContract"
+import { AgentTokenContext, PageViewContext } from "../../../Utils/GlobalContext";
+import { FleetShipDetails } from "./FleetClasses";
+import { WaypointProfile } from "../Navigation/NavigationClasses";
+import { ShippingContract } from "../Mission Dashboard/MissionClasses";
 
 export default function FleetManagement() {
-    const [shipData, setShipData] = useState([new FleetShip]); //list of the player's ships
+    const [shipData, setShipData] = useState([new FleetShipDetails]); //list of the player's ships
     const [currentShip, setCurrentShip] = useState("None"); //information about currently selected ship
     const [waypointDetails, setWaypointDetails] = useState(new WaypointProfile);
     const agentToken = useContext(AgentTokenContext); //Fetch agent token from context
@@ -21,7 +23,7 @@ export default function FleetManagement() {
             <h2>Fleet Management</h2>
             <div id="fleetList">
                 {/* map all ships to buttons so player can choose to view more information */}
-                {shipData.map((ship: FleetShip) => <input key={ship.symbol} type="button" className={currentShip === ship.symbol ? "activeGenericButton" : "genericButton"} value={ship.symbol} onClick={() => setCurrentShip(ship.symbol)} />)}
+                {shipData.map((ship: FleetShipDetails) => <input key={ship.symbol} type="button" className={currentShip === ship.symbol ? "activeGenericButton" : "genericButton"} value={ship.symbol} onClick={() => setCurrentShip(ship.symbol)} />)}
             </div>
             <div id="shipOverview">
                 {/* Fetch information about the currently selected ship */}
@@ -34,7 +36,7 @@ export default function FleetManagement() {
 
 //Fetch and render details of a specified ship
 export function ShipDetails({ shipSymbol, setWaypointDetails, waypointDetails }: { shipSymbol: string; setWaypointDetails: Dispatch<SetStateAction<WaypointProfile>>, waypointDetails: WaypointProfile }) {
-    const [fleetShipDetails, setFleetShipDetails] = useState(new FleetShip);
+    const [fleetShipDetails, setFleetShipDetails] = useState(new FleetShipDetails);
     const agentToken = useContext(AgentTokenContext); //Fetch agent token from context
 
     useEffect(() => {
@@ -61,7 +63,7 @@ export function ShipDetails({ shipSymbol, setWaypointDetails, waypointDetails }:
 }
 
 //Fetch details about a given waypoint
-export function VehicleDetails({ fleetShipDetails }: { fleetShipDetails: FleetShip }) {
+export function VehicleDetails({ fleetShipDetails }: { fleetShipDetails: FleetShipDetails }) {
     return (
         <div className="shipInfoBox">
             <h3>Ship Details:</h3>
@@ -92,7 +94,7 @@ export function VehicleDetails({ fleetShipDetails }: { fleetShipDetails: FleetSh
 }
 
 //Fetch details about a given waypoint
-export function NavigationDetails({ fleetShipDetails }: { fleetShipDetails: FleetShip }) {
+export function NavigationDetails({ fleetShipDetails }: { fleetShipDetails: FleetShipDetails }) {
     return (
         <div className="shipInfoBox">
             <h3>Navigation:</h3>
@@ -135,14 +137,20 @@ export function WaypointDetails({ waypointDetails }: { waypointDetails: Waypoint
 }
 
 //Fetch details about a given waypoint
-export function CommandDetails({ fleetShipDetails, setFleetShipDetails, waypointDetails }: { fleetShipDetails: FleetShip, setFleetShipDetails: Dispatch<SetStateAction<FleetShip>>, waypointDetails: WaypointProfile }) {
+export function CommandDetails({ fleetShipDetails, setFleetShipDetails, waypointDetails }: { fleetShipDetails: FleetShipDetails, setFleetShipDetails: Dispatch<SetStateAction<FleetShipDetails>>, waypointDetails: WaypointProfile }) {
     const setCurrentView = useContext(PageViewContext)[1]; // import page state from context
+    const [contractList, setContractList] = useState([new ShippingContract]);
     const agentToken = useContext(AgentTokenContext); //Fetch agent token from context
 
+    //api request to Fetch details of current missions 
+    useEffect(() => {
+        fetchContractList(agentToken, setContractList);
+    }, [agentToken, setContractList]);
     return (
         <div className="shipInfoBox">
             {
                 ["COMMAND", "SATELLITE"].includes(fleetShipDetails.registration.role) &&
+                contractList.length == 0 &&
                 <input type="button" className="fullWidthButton" value="Negotiate New Contract" onClick={() => fetchNewContract(agentToken, fleetShipDetails.registration.name, setCurrentView)} />
             }
             {
@@ -161,6 +169,7 @@ export function CommandDetails({ fleetShipDetails, setFleetShipDetails, waypoint
             {
                 "IN_ORBIT" === fleetShipDetails.nav.status &&
                 ["ASTEROID", "ENGINEERED_ASTEROID"].includes(waypointDetails.type) &&
+                fleetShipDetails.cooldown.remainingSeconds === 0 &&
                 <input type="button" className="fullWidthButton" value="Extract Ores" onClick={() => doShipAction({ agentToken, shipSymbol: fleetShipDetails.symbol, fleetShipDetails, setFleetShipDetails, action: "extract" })} />
             }
         </div>

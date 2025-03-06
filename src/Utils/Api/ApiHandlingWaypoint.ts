@@ -1,6 +1,8 @@
 import { type Dispatch, type SetStateAction } from "react"
-import { makeApiGetCall, makeApiPostCall } from "./ApiCalls";
-import { ShipyardStock, WaypointProfile } from "../Views/Classes";
+import { makeApiGetCall, makeApiPostCall } from "./ApiWrappers";
+import { ShipyardStock } from "../../Views/GameInterface/Shipyard/ShipyardClasses";
+import { WaypointProfile } from "../../Views/GameInterface/Navigation/NavigationClasses";
+import { Views } from "../ViewChoices";
 
 // interface for data types in fetchAgentDetails
 interface fetchWaypointDetailsPropTypes {
@@ -99,21 +101,7 @@ export async function fetchShipyardShips({ agentToken, systemSymbol, shipyardWay
         if (status) {
             const shipyardData = json.data.ships;
             if (shipyardData) {
-                const shipyardList = [];
-
-                // iterate through ships and make list of names for ease of access
-                for (let i = 0; i < shipyardData.length; i++) {
-                    const ship = shipyardData[i];
-                    const shipyardObject: ShipyardStock = {
-                        shipType: ship.type,
-                        shipSymbol: ship.name,
-                        shipDescription: ship.description,
-                        shipSupply: ship.supply,
-                        shipPurchasePrice: ship.purchasePrice,
-                        shipyardWaypointSymbol: shipyardWaypointSymbol
-                    };
-                    shipyardList.push(shipyardObject);
-                }
+                const shipyardList = shipyardData.map((ship:ShipyardStock)=> ship);
                 setShipyardStock(shipyardList);
             }
             else {
@@ -123,12 +111,11 @@ export async function fetchShipyardShips({ agentToken, systemSymbol, shipyardWay
                 for (let i = 0; i < shipyardSummary.length; i++) {
                     const ship = shipyardSummary[i];
                     const shipyardObject: ShipyardStock = {
-                        shipType: ship.type,
-                        shipSymbol: "unknown",
-                        shipDescription: "Visit shipyard for more details",
-                        shipSupply: "unknown",
-                        shipPurchasePrice: 0,
-                        shipyardWaypointSymbol: shipyardWaypointSymbol
+                        type: ship.type,
+                        name: "unknown",
+                        description: "Visit shipyard for more details",
+                        supply: "unknown",
+                        purchasePrice: 0,
                     };
                     shipyardList.push(shipyardObject);
                 }
@@ -145,22 +132,21 @@ export async function fetchShipyardShips({ agentToken, systemSymbol, shipyardWay
 interface fetchNewShipPropTypes {
     agentToken: string;
     shipType: string;
-    shipyardWaypointSymbol: string;
     setCurrentView: Dispatch<SetStateAction<string>>
 }
 // Negotiate a new contract using the specified ship
-export async function fetchNewShip({ agentToken, shipType, shipyardWaypointSymbol, setCurrentView }: fetchNewShipPropTypes) {
+export async function fetchNewShip({ agentToken, shipType, setCurrentView }: fetchNewShipPropTypes, shipyardWaypointSymbol:string) {
 
     // send request to create a new agent
     const body = JSON.stringify({
         shipType: shipType,
         waypointSymbol: shipyardWaypointSymbol,
     });
-    const [json, status] = await makeApiPostCall(`my/ships`, agentToken, body)
+    const [json, status] = await makeApiPostCall(`my/ships`, agentToken, body);
 
     if (status) {
         // set the agent token for later use
-        setCurrentView("Fleet Management")
+        setCurrentView(Views.FleetManagement);
     }
     else {
         console.error(json.error);

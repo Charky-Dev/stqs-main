@@ -1,11 +1,13 @@
 import { useState, useEffect, useContext } from "react";
-import { fetchFleet } from "../../Api/ApiHandlingFleet"
-import { fetchAllShipyards, fetchShipyardShips, fetchNewShip} from "../../Api/ApiHandlingWaypoint"
-import { AgentTokenContext, PageViewContext } from "../../GlobalContext";
-import { ShipyardStock, FleetShip } from "../Classes";
+import { fetchFleet } from "../../../Utils/Api/ApiHandlingFleet";
+import { fetchAllShipyards, fetchShipyardShips, fetchNewShip} from "../../../Utils/Api/ApiHandlingWaypoint";
+import { AgentTokenContext, PageViewContext } from "../../../Utils/GlobalContext";
+import { ShipyardStock } from "./ShipyardClasses";
+import { FleetShipDetails } from "../Fleet Management/FleetClasses";
+import moneyIcon from "../../../Assets/images/money.png"
 
 export default function Shipyard() {
-    const [shipData, setShipData] = useState([new FleetShip]); //list of the player's ships
+    const [shipData, setShipData] = useState([new FleetShipDetails]); //list of the player's ships
     const [shipyardNames, setShipyardNames] = useState([{ shipyardName: "", shipyardWaypoint: "" }]); //list of the player's shipyards
     const [currentShipyard, setCurrentShipyard] = useState({ shipyardName: "", shipyardWaypoint: "" }); //information about currently selected shipyard
     const agentToken = useContext(AgentTokenContext); //Fetch agent token from context
@@ -17,7 +19,7 @@ export default function Shipyard() {
 
     // Fetch information about the player's shipyards from the api
     useEffect(() => {
-        const shipLocations = shipData.map((ship: FleetShip) => ship.nav.systemSymbol);
+        const shipLocations = shipData.map((ship: FleetShipDetails) => ship.nav.systemSymbol);
         fetchAllShipyards({agentToken, shipLocations, setShipyardNames});
     }, [agentToken, shipData, setShipyardNames]);
     
@@ -44,10 +46,10 @@ function ShipyardDetails({ shipyardWaypointSymbol, systemSymbol }: { shipyardWay
     useEffect(() => {
         fetchShipyardShips({agentToken, systemSymbol, shipyardWaypointSymbol, setShipyardStock});
     }, [agentToken, systemSymbol, shipyardWaypointSymbol, setShipyardStock]);
-
+    
     return (
         <div id="contractDetails">
-            {shipyardStock[0].shipType &&
+            {shipyardStock[0].type &&
                 <table>
                     <thead>
                         <tr>
@@ -70,7 +72,7 @@ function ShipyardDetails({ shipyardWaypointSymbol, systemSymbol }: { shipyardWay
                     </thead>
                     <tbody>
                         {/* map all ships to buttons so player can choose to view more information */}
-                        {shipyardStock.map((ship:ShipyardStock) => <ShipDetails key={ship.shipType} shipyardShip={ship} />)}
+                        {shipyardStock.map((ship:ShipyardStock) => <ShipDetails key={ship.type} shipyardShip={ship} shipyardWaypointSymbol={shipyardWaypointSymbol} />)}
                     </tbody>
                 </table>
             }
@@ -80,28 +82,30 @@ function ShipyardDetails({ shipyardWaypointSymbol, systemSymbol }: { shipyardWay
 }
 
 // function to render ships in table
-function ShipDetails({shipyardShip}:{shipyardShip: ShipyardStock}) {
+function ShipDetails({shipyardShip, shipyardWaypointSymbol}:{shipyardShip: ShipyardStock, shipyardWaypointSymbol:string}) {
         const agentToken = useContext(AgentTokenContext); //fetch agent token from context
         const setCurrentView = useContext(PageViewContext);
     try {
-        const shipProps = {agentToken:agentToken, shipType:shipyardShip.shipType, shipyardWaypointSymbol:shipyardShip.shipyardWaypointSymbol, setCurrentView:setCurrentView[1]};
+        const shipProps = {agentToken:agentToken, shipType:shipyardShip.type, setCurrentView:setCurrentView[1]};
 
         return (
-            <tr key={shipyardShip.shipSymbol}>
+            <tr key={shipyardShip.name}>
                 <td>
-                    {shipyardShip.shipType.replace(/_/g," ")}
+                    {shipyardShip.type.replace(/_/g," ")}
                 </td>
                 <td>
-                    {shipyardShip.shipSymbol}
+                    {shipyardShip.name}
                 </td>
                 <td>
-                    {shipyardShip.shipDescription}
+                    {shipyardShip.description}
                 </td>
                 <td>
-                    {shipyardShip.shipSupply}
+                    {shipyardShip.supply}
                 </td>
                 <td>
-                    {shipyardShip.shipPurchasePrice ? <input type="button" className="fullWidthButton" value="Purchase Ship" onClick={() => fetchNewShip(shipProps)}/> : "Unknown"}
+                    {shipyardShip.purchasePrice ? <input type="button" className="fullWidthButton" value="Purchase Ship" onClick={() => fetchNewShip(shipProps, shipyardWaypointSymbol)}/> : "Unavailable"}<br/>
+                    <img src={moneyIcon} className="playerIcon" title="Cost of ship"></img>
+                    {shipyardShip.purchasePrice ? shipyardShip.purchasePrice : "price unknown"}
                 </td>
             </tr>
 

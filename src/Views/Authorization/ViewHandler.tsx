@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
-import ButtonMenu from "./Views/ButtonMenu";
-import MissionDashboard from "./Views/Mission Dashboard/MissionDashboard";
-import FleetManagement from "./Views/Fleet Management/FleetManagement";
-import Shipyard from "./Views/Shipyard/Shipyard";
-import Navigation from "./Views/Navigation/Navigation";
-import { fetchReturningPlayer } from "./Api/ApiHandlingPlayer";
-import { AgentTokenContext, PageViewContext } from "./GlobalContext";
-import logo from "../assets/images/spacetraders.ico"
-import homeIcon from "../assets/images/home.png"
-import shipIcon from "../assets/images/ship.png"
-import moneyIcon from "../assets/images/money.png"
-import "../assets/css/game.css"
+import ButtonMenu from "../../Components/ButtonMenu/ButtonMenu";
+import MissionDashboard from "../GameInterface/Mission Dashboard/MissionDashboard";
+import FleetManagement from "../GameInterface/Fleet Management/FleetManagement";
+import Shipyard from "../GameInterface/Shipyard/Shipyard";
+import Navigation from "../GameInterface/Navigation/Navigation";
+import { fetchReturningPlayer } from "../../Utils/Api/ApiHandlingPlayer";
+import { AgentTokenContext, PageViewContext } from "../../Utils/GlobalContext";
+import logo from "../../Assets/images/spacetraders.ico"
+import homeIcon from "../../Assets/images/home.png"
+import shipIcon from "../../Assets/images/ship.png"
+import moneyIcon from "../../Assets/images/money.png"
+import "../../Assets/css/game.css"
+import { Views } from "../../Utils/ViewChoices";
 
-export default function ReturningPlayer(apiToken: { agentToken: string; }) {
+export default function ViewHandler(apiToken: { agentToken: string; }) {
     const agentToken: string = apiToken.agentToken;
 
     const [userData, setUserData] = useState({ symbol: "", faction: "", agentToken: agentToken });
@@ -45,10 +46,10 @@ export default function ReturningPlayer(apiToken: { agentToken: string; }) {
                     <PageViewContext.Provider value={[currentView, setCurrentView]}>
                     <ButtonMenu />
                         <div id="gameViews">
-                            {currentView === "Mission Dashboard" && <MissionDashboard />}
-                            {currentView === "Fleet Management" && <FleetManagement />}
-                            {currentView === "Shipyard" && <Shipyard />}
-                            {currentView === "Navigation" && <Navigation />}
+                            {currentView === Views.MissionDashboard && <MissionDashboard />}
+                            {currentView === Views.FleetManagement && <FleetManagement />}
+                            {currentView === Views.Shipyards && <Shipyard />}
+                            {currentView === Views.Navigation && <Navigation />}
                         </div>
                     </PageViewContext.Provider>
                 </div>

@@ -1,12 +1,12 @@
 import { it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import ReturningPlayer from "./ReturningPlayer";
+import ViewHandler from "./ViewHandler";
 
 
 it("renders", async () => {
     // Arrange
     const agentToken = "testAgentToken";
-    render( (<ReturningPlayer agentToken={agentToken} />))
+    render( (<ViewHandler agentToken={agentToken} />))
 
     // Act
     await screen.findAllByRole("heading");

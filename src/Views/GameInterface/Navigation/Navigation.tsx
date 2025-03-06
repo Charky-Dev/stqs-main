@@ -1,13 +1,14 @@
 import { useState, useEffect, useContext } from "react";
-import { fetchFleet } from "../../Api/ApiHandlingFleet"
-import { fetchAllWaypoints } from "../../Api/ApiHandlingWaypoint"
-import { AgentTokenContext } from "../../GlobalContext";
-import { WaypointProfile, FleetShip } from "../Classes";
-import { sendShipTo } from "../../Api/ApiHandlingNavigation";
-import { PageViewContext } from "../../GlobalContext";
+import { fetchFleet } from "../../../Utils/Api/ApiHandlingFleet";
+import { fetchAllWaypoints } from "../../../Utils/Api/ApiHandlingWaypoint";
+import { AgentTokenContext } from "../../../Utils/GlobalContext";
+import { WaypointProfile } from "./NavigationClasses";
+import { FleetShipDetails } from "../Fleet Management/FleetClasses";
+import { sendShipTo } from "../../../Utils/Api/ApiHandlingNavigation";
+import { PageViewContext } from "../../../Utils/GlobalContext";
 
 export default function Navigation() {
-    const [shipData, setShipData] = useState([new FleetShip]); //list of the player's ships
+    const [shipData, setShipData] = useState([new FleetShipDetails]); //list of the player's ships
     const [waypointDetails, setWaypointDetails] = useState([new WaypointProfile]); //list of waypoints in local area
     const [currentShip, setCurrentShip] = useState("");
     const agentToken = useContext(AgentTokenContext); //Fetch agent token from context
@@ -19,7 +20,7 @@ export default function Navigation() {
 
     // Fetch information about the player's Waypoints from the api
     useEffect(() => {
-        const shipLocations = shipData.map((ship: FleetShip) => ship.nav.systemSymbol);
+        const shipLocations = shipData.map((ship: FleetShipDetails) => ship.nav.systemSymbol);
         fetchAllWaypoints({ agentToken, shipLocations, setWaypointDetails });
     }, [agentToken, shipData, setWaypointDetails]);
 
@@ -27,7 +28,7 @@ export default function Navigation() {
         <>
             <h2>Local Waypoints</h2>
             <select name="shipSelector" id="shipSelector" onChange={(event) => setCurrentShip(event.target.value)}>
-                    {shipData.map((ship: FleetShip) => <option key={ship.symbol} id={ship.symbol} value={ship.symbol}>{ship.symbol}</option>)}
+                    {shipData.map((ship: FleetShipDetails) => <option key={ship.symbol} id={ship.symbol} value={ship.symbol}>{ship.symbol}</option>)}
                 </select>
             <div id="waypointDetails">
                 {waypointDetails &&
@@ -91,6 +92,9 @@ function WaypointDetails({ waypoint, currentShip }: { waypoint: WaypointProfile,
             </td>
             <td>
                 <div>{waypoint.traits.map(trait => <span key={trait.symbol}> {trait.symbol.replace(/_/g," ")};</span>)}</div>
+                {/* {waypoint.traits.includes({symbol:"MARKETPLACE"}) &&
+
+                } */}
             </td>
             <td>
             <input type="button" className="fullWidthButton" value="Send Ship" onClick={() => sendShipTo(agentToken, currentShip, waypoint.symbol, setCurrentView)} />
